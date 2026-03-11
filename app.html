@@ -4535,7 +4535,7 @@ async function nxRemoteUpdateCheck() {
     } else {
       // New version available
       badge.innerHTML = '<span style="color:#a78bfa;">v'+current+'</span> → <span style="color:#06d6a0;font-weight:800;">v'+latest+' NEW</span>';
-      btn.textContent = '⬇️ Install v' + latest;
+      btn.innerHTML = '⬇️ Install <span style="background:#06d6a0;color:#111;padding:1px 7px;border-radius:4px;font-size:12px;font-weight:900;">v' + latest + '</span>';
       btn.style.borderColor = '#06d6a0'; btn.style.color = '#06d6a0';
       btn.style.background = '#051a0d';
       btn.onmouseover = function(){ this.style.background='#06d6a0';this.style.color='#111'; };
@@ -4581,10 +4581,10 @@ async function nxRemoteInstall(version) {
         setTimeout(function(){ location.reload(); }, 2500);
       } catch(e) {
         btn.disabled = false;
-        btn.textContent = '❌ Update Failed';
-        btn.style.borderColor = '#e63946'; btn.style.color = '#e63946';
+        btn.innerHTML = '⬇️ Install <span style="background:#06d6a0;color:#111;padding:1px 7px;border-radius:4px;font-size:12px;font-weight:900;">v' + version + '</span>';
+        btn.style.borderColor = '#06d6a0'; btn.style.color = '#06d6a0';
+        btn.style.background = '#051a0d';
         nxToast('❌ Update failed: ' + e.message, 5000);
-        setTimeout(function(){ nxResetUpdateBtn(); }, 3000);
       }
     }, true);
 }
@@ -4602,7 +4602,7 @@ function nxSilentUpdateCheck() {
         if (badge) badge.innerHTML = '<span style="color:#06d6a0;font-weight:800;animation:pulse 1.5s infinite;">🆕 v'+data.version+' available</span>';
         var btn = document.getElementById('nx-update-btn');
         if (btn) {
-          btn.textContent = '⬇️ Install v' + data.version;
+          btn.innerHTML = '⬇️ Install <span style="background:#06d6a0;color:#111;padding:1px 7px;border-radius:4px;font-size:12px;font-weight:900;">v' + data.version + '</span>';
           btn.style.borderColor = '#06d6a0'; btn.style.color = '#06d6a0';
           btn.style.background = '#051a0d';
           btn.onmouseover = function(){ this.style.background='#06d6a0';this.style.color='#111'; };
