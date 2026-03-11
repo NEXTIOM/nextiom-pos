@@ -111,7 +111,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .bpa-save  {padding:8px 4px;background:#1e1800;color:var(--or);border:1.5px solid #3a3000;border-radius:7px;font-family:'IBM Plex Sans',sans-serif;font-size:clamp(10px,0.9vw,12px);font-weight:700;cursor:pointer;text-align:center;}
 .bpa-save:hover{background:#3a3000;}
 .bpa-clear {padding:8px 4px;background:transparent;color:#555;border:1.5px solid #2a2a26;border-radius:7px;font-family:'IBM Plex Sans',sans-serif;font-size:clamp(10px,0.9vw,12px);cursor:pointer;text-align:center;}
-.bpa-clear:hover{color:var(--red);border-color:var(--red);}
+.bpa-clear:hover{color:#ccc;border-color:#666;}
 .bpa-refresh{padding:8px 4px;background:#0d0d0b;color:#555;border:1.5px solid #2a2a26;border-radius:7px;font-family:'IBM Plex Sans',sans-serif;font-size:clamp(10px,0.9vw,12px);cursor:pointer;text-align:center;}
 .bpa-refresh:hover{color:#06d6a0;border-color:#06d6a0;}
 
@@ -880,6 +880,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
   <button class="nb" id="nb-report" onclick="goPage('report')">📊 DAILY REPORT</button>
   <button class="nb" id="nb-cash" onclick="goPage('cash')">💵 CASH DRAWER</button>
   <button class="nb" id="nb-settings" onclick="goPage('settings')">⚙️ SETTINGS</button>
+  <button class="nb" onclick="doRefresh()" style="color:#555;border-color:#2a2a26;" onmouseover="this.style.color='#F5A623';this.style.borderColor='#F5A623';" onmouseout="this.style.color='#555';this.style.borderColor='#2a2a26';">🔄 REFRESH</button>
   <button class="nb" id="nb-logout" onclick="nxLogout()" style="margin-left:auto;color:#e63946;border-color:#e63946;opacity:0.7;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">⏻ LOG OUT</button>
 </div>
 
@@ -993,8 +994,8 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
       <div class="bp-secondary-grid">
         <button class="bpa-save" onclick="doSave()">💾 SAVE (NO PRINT)</button>
         <button class="bpa-wa"   onclick="openWA()">📱 WHATSAPP</button>
-        <button class="bpa-clear" onclick="doClear()">✕ CLEAR</button>
-        <button class="bpa-refresh" onclick="doRefresh()">🔄 SYSTEM REFRESH</button>
+        <button class="bpa-clear" onclick="doClear()" style="grid-column:1/-1;">✕ CLEAR</button>
+        
       </div>
     </div>
     <div style="font-size:9px;color:#333;text-align:center;padding:4px 0 6px;">⚙️ For printing: Set Destination → your printer &amp; uncheck Headers/Footers</div>
@@ -4584,14 +4585,16 @@ async function nxRemoteInstall(version) {
         var data = await res.json();
         if (!data.success) throw new Error(data.error || 'Update failed');
         btn.textContent = '✅ Installed! Reloading...';
-        btn.style.borderColor = '#06d6a0'; btn.style.color = '#06d6a0';
+        btn.style.borderColor = '#F5A623'; btn.style.color = '#F5A623';
         nxToast('✅ Update installed! Reloading app...', 3000);
         setTimeout(function(){ location.reload(); }, 2500);
       } catch(e) {
         btn.disabled = false;
-        btn.innerHTML = '⬇️ Install <span style="background:#06d6a0;color:#111;padding:1px 7px;border-radius:4px;font-size:12px;font-weight:900;">v' + version + '</span>';
-        btn.style.borderColor = '#06d6a0'; btn.style.color = '#06d6a0';
+        btn.innerHTML = '⬇️ Install <span style="background:#F5A623;color:#111;padding:1px 7px;border-radius:4px;font-size:12px;font-weight:900;">v' + version + '</span>';
+        btn.style.borderColor = '#F5A623'; btn.style.color = '#F5A623';
         btn.style.background = '#1a0d00';
+        btn.onmouseover = function(){ this.style.background='#F5A623';this.style.color='#111'; };
+        btn.onmouseout  = function(){ this.style.background='#1a0d00';this.style.color='#F5A623'; };
         nxToast('❌ Update failed: ' + e.message, 5000);
       }
     }, true);
@@ -4607,19 +4610,19 @@ function nxSilentUpdateCheck() {
       if (!data.version) return;
       if (data.version !== NX_APP_VERSION) {
         var badge = document.getElementById('nx-ver-badge');
-        if (badge) badge.innerHTML = '<span style="color:#F5A623;font-weight:800;animation:pulse 1.5s infinite;">🆕 v'+data.version+' available</span>';
+        if (badge) badge.innerHTML = '<span style="color:#F5A623;font-weight:800;">🆕 v'+data.version+' available</span>';
         var btn = document.getElementById('nx-update-btn');
         if (btn) {
-          btn.innerHTML = '⬇️ Install <span style="background:#06d6a0;color:#111;padding:1px 7px;border-radius:4px;font-size:12px;font-weight:900;">v' + data.version + '</span>';
-          btn.style.borderColor = '#06d6a0'; btn.style.color = '#06d6a0';
+          btn.innerHTML = '⬇️ Install <span style="background:#F5A623;color:#111;padding:1px 7px;border-radius:4px;font-size:12px;font-weight:900;">v' + data.version + '</span>';
+          btn.style.borderColor = '#F5A623'; btn.style.color = '#F5A623';
           btn.style.background = '#1a0d00';
-          btn.onmouseover = function(){ this.style.background='#06d6a0';this.style.color='#111'; };
-          btn.onmouseout  = function(){ this.style.background='#1a0d00';this.style.color='#06d6a0'; };
+          btn.onmouseover = function(){ this.style.background='#F5A623';this.style.color='#111'; };
+          btn.onmouseout  = function(){ this.style.background='#1a0d00';this.style.color='#F5A623'; };
           btn.onclick = function(){ nxRemoteInstall(data.version); };
         }
       }
     } catch(e) { /* silent — no internet or server down */ }
-  }, 5000); // Wait 5s after launch before checking
+  }, 5000);
 }
 
 function nxAskUpdateFile() {
