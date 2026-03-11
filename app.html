@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXTIOM Bill Printer v2.0</title>
+<title>NEXTIOM Bill Printer v2.3</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap');
 :root{--bg:#1a1a18;--panel:#222220;--acc:#2a2a26;--or:#F5A623;--red:#e63946;--text:#e8e8e0;--muted:#888880;--bdr:#3a3a34;}
@@ -637,7 +637,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
   <!-- ── PANEL A: Normal Login ── -->
   <div id="nx-login-panel" style="display:block;background:#1a1a18;border:2px solid #2a2a26;border-radius:16px;padding:44px 48px;width:100%;max-width:440px;box-shadow:0 8px 60px rgba(0,0,0,0.9);text-align:center;">
     <div style="font-size:30px;font-weight:900;color:#F5A623;letter-spacing:4px;margin-bottom:4px;">NEXTIOM</div>
-    <div style="font-size:12px;color:#555;letter-spacing:2px;margin-bottom:28px;">BILL POS v2.0</div>
+    <div style="font-size:12px;color:#555;letter-spacing:2px;margin-bottom:28px;">BILL POS v2.3</div>
 
     <!-- Role tabs -->
     <div style="display:flex;gap:0;margin-bottom:28px;background:#111;border-radius:8px;padding:3px;">
@@ -1115,7 +1115,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
   <div class="rpt-top" style="display:flex;align-items:center;justify-content:space-between;">
     <h2>⚙️ SETTINGS</h2>
     <div style="display:flex;align-items:center;gap:8px;">
-      <span id="nx-ver-badge" style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:#555;">v2.0</span>
+      <span id="nx-ver-badge" style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:#555;">v2.3</span>
       <button id="nx-update-btn" onclick="nxRemoteUpdateCheck()" style="background:#1a0d00;border:1.5px solid #F5A623;color:#F5A623;padding:7px 18px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;display:flex;align-items:center;gap:6px;" onmouseover="this.style.background='#F5A623';this.style.color='#111'" onmouseout="this.style.background='#1a0d00';this.style.color='#F5A623'">🔄 Check for Update</button>
     </div>
   </div>
@@ -1296,7 +1296,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
             <div style="font-size:10px;color:#555;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;border-bottom:1px solid #1e1e1a;padding-bottom:6px;">📊 System Details</div>
             <table style="width:100%;border-collapse:collapse;font-size:12px;">
               <tr><td style="color:#555;padding:5px 0;border-bottom:1px solid #1a1a18;">Product</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--or);padding:5px 0;border-bottom:1px solid #1a1a18;">NEXTIOM Bill POS</td></tr>
-              <tr><td style="color:#555;padding:5px 0;border-bottom:1px solid #1a1a18;">Version</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--or);padding:5px 0;border-bottom:1px solid #1a1a18;">v2.0</td></tr>
+              <tr><td style="color:#555;padding:5px 0;border-bottom:1px solid #1a1a18;">Version</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--or);padding:5px 0;border-bottom:1px solid #1a1a18;">v2.3</td></tr>
               <tr><td style="color:#555;padding:5px 0;border-bottom:1px solid #1a1a18;">License</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#06d6a0;padding:5px 0;border-bottom:1px solid #1a1a18;"><span id="set-lic-status">✅ ACTIVATED</span></td></tr>
               <tr><td style="color:#555;padding:5px 0;border-bottom:1px solid #1a1a18;">Machine ID</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#888;padding:5px 0;border-bottom:1px solid #1a1a18;"><span id="set-machine-id">—</span></td></tr>
               <tr><td style="color:#555;padding:5px 0;border-bottom:1px solid #1a1a18;">Payments</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--or);padding:5px 0;border-bottom:1px solid #1a1a18;"><span id="set-total-pays">—</span></td></tr>
@@ -1573,7 +1573,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 <script>
 // ══════════════════════════════════════════════════════
 // NEXTIOM BILL POS — LICENSE PROTECTION SYSTEM v2.0
-var NX_APP_VERSION = '2.0';
+var NX_APP_VERSION = '2.3';
 // © 2026 Nextiom (Pvt) Ltd | lahirutharaka.com | 070 203 2323
 // Unauthorized modification or redistribution prohibited
 // ══════════════════════════════════════════════════════
@@ -1711,7 +1711,7 @@ var NX_APP_VERSION = '2.0';
       : '';
     var titleNote = mode === 'expired'
       ? '<div style="font-size:11px;color:#e63946;letter-spacing:1px;margin-top:4px;">LICENSE EXPIRED — ENTER RENEWAL KEY</div>'
-      : '<div style="font-size:15px;font-weight:700;color:#888;letter-spacing:2px;margin-top:4px;">BILL POS v2.0</div>';
+      : '<div style="font-size:15px;font-weight:700;color:#888;letter-spacing:2px;margin-top:4px;">BILL POS v2.3</div>';
     var btnLabel = mode === 'expired' ? '🔑 ACTIVATE RENEWAL KEY' : '🔑 ACTIVATE LICENSE';
     var inputLabel = mode === 'expired' ? 'Enter Renewal Key' : 'Enter License Key';
 
@@ -3309,7 +3309,7 @@ function openUserGuide() {
   }
   c.innerHTML = [
     '<div style="background:#111110;border:1.5px solid #2a2a26;border-radius:8px;padding:14px 18px;margin-bottom:20px;">'+
-    '<div style="font-size:15px;font-weight:800;color:var(--or);margin-bottom:4px;">NEXTIOM Bill POS v2.0</div>'+
+    '<div style="font-size:15px;font-weight:800;color:var(--or);margin-bottom:4px;">NEXTIOM Bill POS v2.3</div>'+
     '<div style="font-size:12px;color:#888;">A complete bill payment point-of-sale system for electricity, water, mobile, internet, TV/cable, and custom services. This guide covers everything from A to Z.</div></div>',
 
     sec('1. Getting Started'),
@@ -3400,8 +3400,8 @@ function openUserGuide() {
     tbl([['Problem','Solution'],['Cannot connect to server','Open or restart START.bat. Keep the black window open.'],['Bills not saving','Make sure START.bat server is running.'],['Receipt has colors','Turn off Background Graphics in browser print settings.'],['Customer search empty','Customer not saved yet — enter manually, profile creates automatically.'],['Forgot admin password','Default is nextiom2026. Contact support if changed.'],['Session bar wrong total','Click System Refresh to reset.'],['Data lost after restart','Data is in payments.json in NEXTIOM folder. Always keep regular backups.']]),
 
     sec('15. Support & Contact'),
-    tbl([['',''],['Developer','Lahiru Tharaka'],['Phone / WhatsApp','070 203 2323'],['Website','lahirutharaka.com'],['Product Support','nextiom.com'],['Version','NEXTIOM Bill POS v2.0']]),
-    '<div style="text-align:center;margin-top:28px;padding-top:16px;border-top:1px dashed #2a2a26;color:#444;font-size:11px;">NEXTIOM Bill POS v2.0 · System by Lahiru · lahirutharaka.com</div>'
+    tbl([['',''],['Developer','Lahiru Tharaka'],['Phone / WhatsApp','070 203 2323'],['Website','lahirutharaka.com'],['Product Support','nextiom.com'],['Version','NEXTIOM Bill POS v2.3']]),
+    '<div style="text-align:center;margin-top:28px;padding-top:16px;border-top:1px dashed #2a2a26;color:#444;font-size:11px;">NEXTIOM Bill POS v2.3 · System by Lahiru · lahirutharaka.com</div>'
   ].join('');
 }
 
