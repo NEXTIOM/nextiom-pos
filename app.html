@@ -1115,7 +1115,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
     <h2>⚙️ SETTINGS</h2>
     <div style="display:flex;align-items:center;gap:8px;">
       <span id="nx-ver-badge" style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:#555;">v2.0</span>
-      <button id="nx-update-btn" onclick="nxRemoteUpdateCheck()" style="background:#1a0a3a;border:1.5px solid #7c3aed;color:#a78bfa;padding:7px 18px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;display:flex;align-items:center;gap:6px;" onmouseover="this.style.background='#7c3aed';this.style.color='#fff'" onmouseout="this.style.background='#1a0a3a';this.style.color='#a78bfa'">🔄 Check for Update</button>
+      <button id="nx-update-btn" onclick="nxRemoteUpdateCheck()" style="background:#1a0d00;border:1.5px solid #F5A623;color:#F5A623;padding:7px 18px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;display:flex;align-items:center;gap:6px;" onmouseover="this.style.background='#F5A623';this.style.color='#111'" onmouseout="this.style.background='#1a0d00';this.style.color='#F5A623'">🔄 Check for Update</button>
     </div>
   </div>
   <div class="set-body">
@@ -1380,11 +1380,18 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
             <div style="font-size:11px;color:#06d6a0;font-weight:700;letter-spacing:1px;margin-bottom:6px;">💾 BACKUP FOLDER</div>
             <div style="font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6;">Recommended backup location. Copy your JSON data files here regularly for safety.</div>
             <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;margin-bottom:10px;min-height:28px;">Desktop\NEXTIOM-Backups\</div>
-            <button onclick="nxConfirm('📂 Open Desktop','Admin password required to access desktop folder.',function(){nxOpenFolder('desktop');},true)" style="background:#051a0d;border:1.5px solid #06d6a0;color:#06d6a0;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='#06d6a0';this.style.color='#111'" onmouseout="this.style.background='#051a0d';this.style.color='#06d6a0'">📂 Open Desktop</button>
+            <button onclick="nxConfirm('📂 Open Desktop','Admin password required to access desktop folder.',function(){nxOpenFolder('desktop');},true)" style="background:#051a0d;border:1.5px solid #06d6a0;color:#06d6a0;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='#06d6a0';this.style.color='#111'" onmouseout="this.style.background='#1a0d00';this.style.color='#06d6a0'">📂 Open Desktop</button>
           </div>
-          <!-- UPDATE APP moved to Settings page header -->
+          <!-- UPDATE APP — Manual + OTA -->
           <input type="file" id="nx-update-file" accept=".html" style="display:none;" onchange="nxDoAppUpdate(this)">
-          <div id="nx-update-status" style="display:none;"></div>
+          <div style="background:#0e0a1a;border:1.5px solid #7c3aed;border-radius:10px;padding:16px;">
+            <div style="font-size:11px;color:#a78bfa;font-weight:700;letter-spacing:1px;margin-bottom:6px;">🔄 UPDATE APP</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.6;">
+              Drop a new <span style="color:#a78bfa;font-family:'IBM Plex Mono',monospace;">app.html</span> to update manually. Or use <strong style="color:#F5A623;">Check for Update</strong> in the header for auto update.
+            </div>
+            <div id="nx-update-status" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;margin-bottom:10px;min-height:20px;">Choose file to begin update</div>
+            <button onclick="nxAskUpdateFile()" style="background:#1a0a3a;border:1.5px solid #7c3aed;color:#a78bfa;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='#7c3aed';this.style.color='#fff'" onmouseout="this.style.background='#1a0a3a';this.style.color='#a78bfa'">📁 Manual Update File</button>
+          </div>
         </div>
       </div>
 
@@ -1517,7 +1524,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
     <div id="bin-list" style="flex:1;overflow-y:auto;min-height:120px;max-height:380px;border:1px solid #1e1e1a;border-radius:8px;background:#0a0a08;"></div>
     <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;align-items:center;">
       <button onclick="nxConfirm('🗑️ Empty Bin','Permanently delete ALL records in bin? Admin password required.',function(){binEmptyAll();},true)" style="background:#1a0505;border:1.5px solid #e63946;color:#e63946;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;" onmouseover="this.style.background='#e63946';this.style.color='#fff'" onmouseout="this.style.background='#1a0505';this.style.color='#e63946'">🗑️ Empty Entire Bin</button>
-      <button onclick="binRestoreAll()" style="background:#051a0d;border:1.5px solid #06d6a0;color:#06d6a0;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;" onmouseover="this.style.background='#06d6a0';this.style.color='#111'" onmouseout="this.style.background='#051a0d';this.style.color='#06d6a0'">↩️ Restore All</button>
+      <button onclick="binRestoreAll()" style="background:#051a0d;border:1.5px solid #06d6a0;color:#06d6a0;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;" onmouseover="this.style.background='#06d6a0';this.style.color='#111'" onmouseout="this.style.background='#1a0d00';this.style.color='#06d6a0'">↩️ Restore All</button>
       <button onclick="closeDeletedBin()" style="margin-left:auto;background:none;border:1.5px solid #333;color:var(--muted);padding:7px 16px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;">Close</button>
     </div>
   </div>
@@ -4519,8 +4526,8 @@ async function nxRemoteUpdateCheck() {
   btn.textContent = '⏳ Checking...';
   btn.disabled = true;
   try {
-    var res = await fetch(API + '/check-update?t=' + Date.now());
-    if (!res.ok) throw new Error('Server unreachable');
+    var res = await fetch('https://raw.githubusercontent.com/NEXTIOM/nextiom-pos/main/version.json?t=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     var data = await res.json();
     btn.disabled = false;
     if (!data.version) throw new Error('Invalid response');
@@ -4528,21 +4535,19 @@ async function nxRemoteUpdateCheck() {
     var current = NX_APP_VERSION;
     if (latest === current) {
       btn.textContent = '✅ Up to Date';
-      btn.style.borderColor = '#06d6a0'; btn.style.color = '#06d6a0';
-      btn.onmouseover = function(){ this.style.background='#06d6a0';this.style.color='#111'; };
-      btn.onmouseout  = function(){ this.style.background='#1a0a3a';this.style.color='#06d6a0'; };
+      btn.style.borderColor = '#F5A623'; btn.style.color = '#F5A623';
+      btn.onmouseover = function(){ this.style.background='#F5A623';this.style.color='#111'; };
+      btn.onmouseout  = function(){ this.style.background='#1a0d00';this.style.color='#F5A623'; };
       setTimeout(function(){ nxResetUpdateBtn(); }, 4000);
     } else {
-      // New version available
-      badge.innerHTML = '<span style="color:#a78bfa;">v'+current+'</span> → <span style="color:#06d6a0;font-weight:800;">v'+latest+' NEW</span>';
-      btn.innerHTML = '⬇️ Install <span style="background:#06d6a0;color:#111;padding:1px 7px;border-radius:4px;font-size:12px;font-weight:900;">v' + latest + '</span>';
-      btn.style.borderColor = '#06d6a0'; btn.style.color = '#06d6a0';
-      btn.style.background = '#051a0d';
-      btn.onmouseover = function(){ this.style.background='#06d6a0';this.style.color='#111'; };
-      btn.onmouseout  = function(){ this.style.background='#051a0d';this.style.color='#06d6a0'; };
+      badge.innerHTML = '<span style="color:#F5A623;">v'+current+'</span> → <span style="color:#F5A623;font-weight:800;">v'+latest+' NEW ✨</span>';
+      btn.innerHTML = '⬇️ Install <span style="background:#F5A623;color:#111;padding:1px 7px;border-radius:4px;font-size:12px;font-weight:900;">v' + latest + '</span>';
+      btn.style.borderColor = '#F5A623'; btn.style.color = '#F5A623';
+      btn.style.background = '#1a0d00';
+      btn.onmouseover = function(){ this.style.background='#F5A623';this.style.color='#111'; };
+      btn.onmouseout  = function(){ this.style.background='#1a0d00';this.style.color='#F5A623'; };
       btn.onclick = function(){ nxRemoteInstall(latest); };
-      // Also show a toast notification
-      nxToast('🆕 NEXTIOM v' + latest + ' is available! Click "Install v'+latest+'" in Settings.', 6000);
+      nxToast('🆕 NEXTIOM v' + latest + ' is available! Click Install in Settings.', 6000);
     }
   } catch(e) {
     btn.disabled = false;
@@ -4557,10 +4562,10 @@ function nxResetUpdateBtn() {
   if (!btn) return;
   btn.textContent = '🔄 Check for Update';
   btn.disabled = false;
-  btn.style.borderColor = '#7c3aed'; btn.style.color = '#a78bfa';
-  btn.style.background = '#1a0a3a';
-  btn.onmouseover = function(){ this.style.background='#7c3aed';this.style.color='#fff'; };
-  btn.onmouseout  = function(){ this.style.background='#1a0a3a';this.style.color='#a78bfa'; };
+  btn.style.borderColor = '#F5A623'; btn.style.color = '#F5A623';
+  btn.style.background = '#1a0d00';
+  btn.onmouseover = function(){ this.style.background='#F5A623';this.style.color='#111'; };
+  btn.onmouseout  = function(){ this.style.background='#1a0d00';this.style.color='#F5A623'; };
   btn.onclick = function(){ nxRemoteUpdateCheck(); };
 }
 
@@ -4572,7 +4577,10 @@ async function nxRemoteInstall(version) {
       btn.textContent = '⏳ Downloading...';
       btn.disabled = true;
       try {
-        var res = await fetch(API + '/remote-update', { method: 'POST' });
+        var dlRes = await fetch('https://raw.githubusercontent.com/NEXTIOM/nextiom-pos/main/app.html?t=' + Date.now());
+        if (!dlRes.ok) throw new Error('Download failed: HTTP ' + dlRes.status);
+        var html = await dlRes.text();
+        var res = await fetch(API + '/update-app', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({html: html}) });
         var data = await res.json();
         if (!data.success) throw new Error(data.error || 'Update failed');
         btn.textContent = '✅ Installed! Reloading...';
@@ -4583,7 +4591,7 @@ async function nxRemoteInstall(version) {
         btn.disabled = false;
         btn.innerHTML = '⬇️ Install <span style="background:#06d6a0;color:#111;padding:1px 7px;border-radius:4px;font-size:12px;font-weight:900;">v' + version + '</span>';
         btn.style.borderColor = '#06d6a0'; btn.style.color = '#06d6a0';
-        btn.style.background = '#051a0d';
+        btn.style.background = '#1a0d00';
         nxToast('❌ Update failed: ' + e.message, 5000);
       }
     }, true);
@@ -4593,20 +4601,20 @@ async function nxRemoteInstall(version) {
 function nxSilentUpdateCheck() {
   setTimeout(async function() {
     try {
-      var res = await fetch(API + '/check-update?t=' + Date.now());
+      var res = await fetch('https://raw.githubusercontent.com/NEXTIOM/nextiom-pos/main/version.json?t=' + Date.now());
       if (!res.ok) return;
       var data = await res.json();
       if (!data.version) return;
       if (data.version !== NX_APP_VERSION) {
         var badge = document.getElementById('nx-ver-badge');
-        if (badge) badge.innerHTML = '<span style="color:#06d6a0;font-weight:800;animation:pulse 1.5s infinite;">🆕 v'+data.version+' available</span>';
+        if (badge) badge.innerHTML = '<span style="color:#F5A623;font-weight:800;animation:pulse 1.5s infinite;">🆕 v'+data.version+' available</span>';
         var btn = document.getElementById('nx-update-btn');
         if (btn) {
           btn.innerHTML = '⬇️ Install <span style="background:#06d6a0;color:#111;padding:1px 7px;border-radius:4px;font-size:12px;font-weight:900;">v' + data.version + '</span>';
           btn.style.borderColor = '#06d6a0'; btn.style.color = '#06d6a0';
-          btn.style.background = '#051a0d';
+          btn.style.background = '#1a0d00';
           btn.onmouseover = function(){ this.style.background='#06d6a0';this.style.color='#111'; };
-          btn.onmouseout  = function(){ this.style.background='#051a0d';this.style.color='#06d6a0'; };
+          btn.onmouseout  = function(){ this.style.background='#1a0d00';this.style.color='#06d6a0'; };
           btn.onclick = function(){ nxRemoteInstall(data.version); };
         }
       }
