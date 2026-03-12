@@ -13,6 +13,8 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 /* NAV */
 .nav{display:flex;background:#111110;border-bottom:2px solid var(--bdr);flex-shrink:0;height:50px;overflow-x:auto;}
 .nb{padding:0 clamp(10px,1.4vw,22px);font-size:clamp(9px,0.75vw,11px);font-weight:700;letter-spacing:clamp(0.5px,0.15vw,2px);text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:3px solid transparent;font-family:'IBM Plex Sans',sans-serif;white-space:nowrap;}
+.nb-pop{padding:0 5px;font-size:11px;cursor:pointer;border:none;background:none;color:var(--muted);height:100%;transition:color 0.15s;margin-left:-8px;margin-right:4px;}
+.nb-pop:hover{color:#F5A623;}
 .nb:hover{color:var(--text);}
 .nb.on{color:var(--or);border-bottom-color:var(--or);}
 /* SESSION BAR */
@@ -40,7 +42,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .sb-preset-clr:hover{border-color:var(--red);color:var(--red);background:none;}
 /* PAGES */
 #pg-bill{display:flex;flex:1;overflow-y:auto;overflow-x:hidden;align-items:flex-start;}
-#pg-hist,#pg-cust{display:none;flex-direction:column;flex:1;overflow:hidden;width:100%;}
+#pg-hist,#pg-cust{display:none;flex-direction:column;flex:1;overflow:hidden;width:100%;min-width:0;}
 
 /* ── RESPONSIVE 3-COLUMN BILL PAGE ── */
 .bp-left{
@@ -274,9 +276,9 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .clr-del-btn{width:100%;padding:11px;background:#3a0a0a;color:var(--red);border:2px solid var(--red);border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:4px;}
 .clr-del-btn:hover{background:var(--red);color:#fff;}
 .clr-cancel{width:100%;padding:9px;background:transparent;color:var(--muted);border:1px solid var(--bdr);border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:12px;cursor:pointer;margin-top:8px;}
-.hist-body{flex:1;overflow-y:auto;padding:14px 20px;background:var(--bg);box-sizing:border-box;width:100%;}
-.htable-wrap{border:1px solid #2a2a26;border-radius:8px;overflow:hidden;width:100%;}
-.htable-head{display:grid;grid-template-columns:14fr 12fr 28fr 12fr 12fr 12fr;padding:7px 16px;background:#0c0c0a;border-bottom:1px solid #2a2a26;gap:0;}
+.hist-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:10px 8px;background:var(--bg);box-sizing:border-box;width:100%;min-width:0;}
+.htable-wrap{border:1px solid #2a2a26;border-radius:8px;overflow:hidden;width:100%;min-width:0;table-layout:fixed;}
+.htable-head{display:grid;grid-template-columns:148px 128px 200px 180px 1fr 138px 108px 228px;padding:6px 10px;background:#0c0c0a;border-bottom:1px solid #2a2a26;gap:0;}
 .htable-head span{font-size:9px;font-weight:800;color:#444;letter-spacing:1.5px;text-transform:uppercase;}
 .htable-head .hth-r{text-align:right;}
 .hrec{background:#141412;border-bottom:1px solid #1c1c19;margin:0;overflow:hidden;cursor:pointer;transition:background 0.1s;}
@@ -284,17 +286,27 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .hrec:nth-child(even){background:#111110;}
 .hrec:hover{background:#1e1c10 !important;}
 .hrec.expanded{background:#1a1800 !important;}
-.hrec-main{display:grid;grid-template-columns:14fr 12fr 28fr 12fr 12fr 12fr;align-items:center;padding:10px 16px;gap:0;min-height:42px;}
+.hrec-main{display:grid;grid-template-columns:148px 128px 200px 180px 1fr 138px 108px 228px;align-items:center;padding:7px 10px;gap:0;min-height:38px;}
 .hrec-stripe{display:none;}
 .hrec-content{display:contents;}
 .hrec-right{display:contents;}
-.hcol-id{font-size:10px;font-weight:700;color:#c8821a;font-family:'IBM Plex Mono',monospace;letter-spacing:0.3px;padding-right:8px;}
-.hcol-type{padding-right:8px;}
+.hcol-id{min-width:0;font-size:10px;font-weight:700;color:#c8821a;font-family:'IBM Plex Mono',monospace;letter-spacing:0.3px;padding-right:8px;}
+.hcol-type{min-width:0;padding-right:8px;}
 .htag{font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;white-space:nowrap;display:inline-block;margin-bottom:2px;}
-.hcol-cust{font-size:12px;font-weight:600;color:#ccc;padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.hcol-date{font-size:10px;color:#555;text-align:right;padding-right:12px;line-height:1.8;}
-.hcol-amount{font-size:12px;font-weight:700;color:#e0951a;font-family:'IBM Plex Mono',monospace;text-align:right;padding-right:12px;line-height:1.8;}
-.hcol-actions{display:flex;gap:3px;justify-content:flex-end;}
+.hcol-cust{font-size:12px;font-weight:600;color:#ccc;padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;max-width:100%;}
+.hcust-wrap{display:flex;flex-direction:column;justify-content:center;cursor:pointer;padding:0 8px;min-width:0;overflow:hidden;}
+.hcust-wrap:hover .hcust-name{color:#F5A623;}
+.hcust-wrap:hover .hcust-sub{color:#F5A623;}
+.hcust-name{font-size:12px;font-weight:600;color:#ccc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color 0.15s;}
+.hcust-sub{font-size:10px;color:#c8821a;margin-top:2px;white-space:nowrap;letter-spacing:0.2px;transition:color 0.15s;font-weight:600;}
+.hcol-hist-btn{display:none;}
+.hcol-acct{font-size:11px;font-weight:500;color:#888;font-family:'IBM Plex Mono',monospace;padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;letter-spacing:0.3px;}
+.hcol-bills{min-width:0;padding:0 8px;font-size:10px;color:#555;line-height:1.6;}
+.hcol-bills .hb-item{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hcol-bills .hb-amt{color:#888;font-family:'IBM Plex Mono',monospace;}
+.hcol-date{min-width:0;font-size:10px;color:#555;text-align:right;padding-right:12px;line-height:1.8;}
+.hcol-amount{min-width:0;font-size:12px;font-weight:700;color:#e0951a;font-family:'IBM Plex Mono',monospace;text-align:right;padding-right:12px;line-height:1.8;}
+.hcol-actions{display:flex;gap:2px;justify-content:flex-end;align-items:center;flex-wrap:nowrap;min-width:0;}
 .hrec-detail{display:none;padding:8px 16px 10px;background:#0c0c0a;border-top:1px dashed #222;font-size:10px;color:#555;font-family:'IBM Plex Mono',monospace;line-height:2;}
 .hrec.expanded .hrec-detail{display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;}
 .hrec-detail strong{color:#888;}
@@ -306,21 +318,21 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .hamount-lbl{display:none;}
 .hamount{font-size:12px;font-weight:700;color:var(--or);font-family:'IBM Plex Mono',monospace;}
 .hbtns{display:flex;gap:3px;}
-.hprint{background:#1a1000;border:1px solid var(--or);color:var(--or);padding:4px 9px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.hprint{background:#1a1000;border:1px solid var(--or);color:var(--or);padding:3px 6px;border-radius:4px;font-size:9px;font-weight:700;cursor:pointer;white-space:nowrap;}
 .hprint:hover{background:var(--or);color:#111;}
-.hpng{background:#0a1a2a;border:1px solid #4fc3f7;color:#4fc3f7;padding:4px 9px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.hpng{background:#0a1a2a;border:1px solid #4fc3f7;color:#4fc3f7;padding:3px 6px;border-radius:4px;font-size:9px;font-weight:700;cursor:pointer;white-space:nowrap;}
 .hpng:hover{background:#4fc3f7;color:#000;}
-.hdel{background:none;border:1px solid #2a2a26;color:#444;padding:4px 7px;border-radius:4px;font-size:10px;cursor:pointer;}
+.hdel{background:none;border:1px solid #2a2a26;color:#444;padding:3px 5px;border-radius:4px;font-size:9px;cursor:pointer;white-space:nowrap;}
 .hdel:hover{color:#e63946;border-color:#e63946;}
-.hedit{background:none;border:1px solid #1e4060;color:#4a90d9;padding:4px 7px;border-radius:4px;font-size:10px;cursor:pointer;position:relative;}
+.hedit{background:none;border:1px solid #1e4060;color:#4a90d9;padding:3px 5px;border-radius:4px;font-size:9px;cursor:pointer;position:relative;white-space:nowrap;width:46px;text-align:center;overflow:hidden;}
 .hedit:hover{background:#4a90d9;color:#fff;}
-.hedit.was-edited{background:#1a0e00;border:1px solid #c8821a;color:#c8821a;font-weight:700;}
+.hedit.was-edited{background:#1a0e00;border:1px solid #c8821a;color:#c8821a;font-weight:700;width:46px;}
 .hedit.was-edited:hover{background:#c8821a;color:#111;}
-.hedit .edit-count{display:inline-block;background:#c8821a;color:#111;border-radius:3px;font-size:8px;font-weight:900;padding:0px 4px;margin-left:3px;vertical-align:middle;}
+.hedit .edit-count{position:absolute;top:-4px;right:-4px;background:#c8821a;color:#111;border-radius:3px;font-size:7px;font-weight:900;padding:0px 3px;line-height:14px;min-width:14px;text-align:center;}
 .edit-tooltip{display:none;position:absolute;bottom:calc(100% + 6px);right:0;background:#111110;border:1px solid #c8821a;border-radius:6px;padding:8px 10px;min-width:220px;max-width:320px;z-index:999;font-size:10px;color:#ccc;white-space:normal;line-height:1.6;text-align:left;box-shadow:0 4px 16px rgba(0,0,0,0.6);}
 .edit-tooltip::after{content:'';position:absolute;top:100%;right:10px;border:5px solid transparent;border-top-color:#c8821a;}
 .hedit:hover .edit-tooltip{display:block;}
-.hwa{background:none;border:1px solid #25D366;color:#25D366;padding:4px 7px;border-radius:4px;font-size:10px;cursor:pointer;font-weight:700;}
+.hwa{background:none;border:1px solid #25D366;color:#25D366;padding:3px 6px;border-radius:4px;font-size:9px;cursor:pointer;font-weight:700;white-space:nowrap;}
 .hwa:hover{background:#25D366;color:#fff;}
 /* Edit Modal */
 .edit-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9999;align-items:center;justify-content:center;}
@@ -340,6 +352,11 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .cust-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;}
 /* New profile card */
 .cp-card{background:var(--panel);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;transition:border-color 0.15s;}
+.cp-card.dragging{opacity:0.4;border:2px dashed #f5c518 !important;transform:scale(0.97);}
+.cp-card.drag-over{border:2px solid #f5c518 !important;box-shadow:0 0 12px rgba(245,197,24,0.3);}
+.cp-drag-handle{cursor:grab;font-size:14px;color:#555;padding:2px 4px;border-radius:4px;line-height:1;user-select:none;}
+.cp-drag-handle:hover{color:#f5c518;background:#2a2000;}
+.cp-drag-handle:active{cursor:grabbing;}
 .cp-card:hover{border-color:var(--or);}
 .cp-card.has-credit{border-color:#e63946 !important;box-shadow:0 0 12px rgba(230,57,70,0.15);}
 .cp-credit-stripe{height:3px;background:linear-gradient(90deg,#e63946,#ff6b6b,#e63946);background-size:200% 100%;animation:creditStripe 2s linear infinite;}
@@ -875,13 +892,13 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 <div class="nav">
   <button class="nb on" id="nb-bill" onclick="goPage('bill')">🧾 BILL PRINTER</button>
   <button class="nb" id="nb-credit" onclick="goPage('credit')" style="color:#4a90d9;">&#x1F4B3; CREDITS (<span id="creditcount">0</span>)</button>
-  <button class="nb" id="nb-hist" onclick="goPage('hist')">📋 PAYMENT HISTORY (<span id="hcount">0</span>)</button>
-  <button class="nb" id="nb-cust" onclick="goPage('cust')">👥 CUSTOMERS (<span id="ccount">0</span>)</button>
-  <button class="nb" id="nb-report" onclick="goPage('report')">📊 DAILY REPORT</button>
-  <button class="nb" id="nb-cash" onclick="goPage('cash')">💵 CASH DRAWER</button>
+  <button class="nb" id="nb-hist" onclick="goPage('hist')">📋 PAYMENT HISTORY (<span id="hcount">0</span>)</button><button class="nb-pop" onclick="nxPopOut('hist')" title="Open in new window">⧉</button>
+  <button class="nb" id="nb-cust" onclick="goPage('cust')">👥 CUSTOMERS (<span id="ccount">0</span>)</button><button class="nb-pop" onclick="nxPopOut('cust')" title="Open in new window">⧉</button>
+  <button class="nb" id="nb-report" onclick="goPage('report')">📊 DAILY REPORT</button><button class="nb-pop" onclick="nxPopOut('report')" title="Open in new window">⧉</button>
+  <button class="nb" id="nb-cash" onclick="goPage('cash')">💵 CASH DRAWER</button><button class="nb-pop" onclick="nxPopOut('cash')" title="Open in new window">⧉</button>
   <button class="nb" id="nb-settings" onclick="goPage('settings')">⚙️ SETTINGS</button>
-  <button class="nb" onclick="doRefresh()" style="color:#555;border-color:#2a2a26;" onmouseover="this.style.color='#F5A623';this.style.borderColor='#F5A623';" onmouseout="this.style.color='#555';this.style.borderColor='#2a2a26';">🔄 REFRESH</button>
   <button class="nb" id="nb-logout" onclick="nxLogout()" style="margin-left:auto;color:#e63946;border-color:#e63946;opacity:0.7;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">⏻ LOG OUT</button>
+  <button class="nb" onclick="doRefresh()" style="color:#555;border-color:#2a2a26;" onmouseover="this.style.color='#F5A623';this.style.borderColor='#F5A623';" onmouseout="this.style.color='#555';this.style.borderColor='#2a2a26';">🔄 REFRESH</button>
 </div>
 
 <!-- SESSION BAR (always-visible cash calc built in) -->
@@ -1053,7 +1070,26 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
       <div class="hstat-item"><div class="hv" id="cs-cnt">0</div><div class="hl">Customers</div></div>
     </div>
   </div>
-  <div class="cust-body"><div class="cust-grid" id="cust-grid"><div class="hempty" style="grid-column:1/-1;">👥 No customers yet.</div></div></div>
+  <div class="cust-body">
+    <!-- FAVOURITES SECTION -->
+    <div id="fav-section" style="display:none;margin-bottom:18px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:0 2px;">
+        <span style="font-size:13px;font-weight:800;letter-spacing:1.5px;color:#f5c518;">⭐ FAVOURITES</span>
+        <span id="fav-count" style="font-size:10px;background:#2a2000;border:1px solid #f5c518;color:#f5c518;border-radius:10px;padding:1px 8px;font-weight:700;"></span>
+        <div style="flex:1;height:1px;background:linear-gradient(to right,#3a3000,transparent);"></div>
+      </div>
+      <div class="cust-grid" id="fav-grid"></div>
+    </div>
+    <!-- ALL CUSTOMERS SECTION -->
+    <div id="all-section" style="background:#0d0d0b;border:1px solid #1e1e1a;border-radius:12px;padding:14px 14px 10px;">
+      <div id="all-section-header" style="display:none;align-items:center;gap:8px;margin-bottom:10px;padding:0 2px;">
+        <span style="font-size:13px;font-weight:800;letter-spacing:1.5px;color:#888;">👥 ALL CUSTOMERS</span>
+        <span id="all-count" style="font-size:10px;background:#1a1a1a;border:1px solid #333;color:#888;border-radius:10px;padding:1px 8px;font-weight:700;"></span>
+        <div style="flex:1;height:1px;background:linear-gradient(to right,#2a2a2a,transparent);"></div>
+      </div>
+      <div class="cust-grid" id="cust-grid"><div class="hempty" style="grid-column:1/-1;">👥 No customers yet.</div></div>
+    </div>
+  </div>
 </div>
 
 <!-- MERGE PROFILES MODAL -->
@@ -1115,7 +1151,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
   <div class="rpt-top" style="display:flex;align-items:center;justify-content:space-between;">
     <h2>⚙️ SETTINGS</h2>
     <div style="display:flex;align-items:center;gap:8px;">
-      <span id="nx-ver-badge" style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:#555;">v2.3</span>
+      <span id="nx-ver-badge" style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:#555;">v2.0</span>
       <button id="nx-update-btn" onclick="nxRemoteUpdateCheck()" style="background:#1a0d00;border:1.5px solid #F5A623;color:#F5A623;padding:7px 18px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;display:flex;align-items:center;gap:6px;" onmouseover="this.style.background='#F5A623';this.style.color='#111'" onmouseout="this.style.background='#1a0d00';this.style.color='#F5A623'">🔄 Check for Update</button>
     </div>
   </div>
@@ -1364,7 +1400,8 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
       </div>
       <div class="set-card" style="grid-column:1/-1;">
         <h3>📂 App Directories</h3>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+        <!-- Row 1: Folders + Update app.html -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px;">
           <div style="background:var(--acc);border:1px solid var(--bdr);border-radius:10px;padding:16px;">
             <div style="font-size:11px;color:var(--or);font-weight:700;letter-spacing:1px;margin-bottom:6px;">📦 APP DATA FOLDER</div>
             <div style="font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6;">Where payments.json, customers.json, profiles.json are stored. Replace these to restore data.</div>
@@ -1383,15 +1420,34 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
             <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;margin-bottom:10px;min-height:28px;">Desktop\NEXTIOM-Backups\</div>
             <button onclick="nxConfirm('📂 Open Desktop','Admin password required to access desktop folder.',function(){nxOpenFolder('desktop');},true)" style="background:#051a0d;border:1.5px solid #06d6a0;color:#06d6a0;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='#06d6a0';this.style.color='#111'" onmouseout="this.style.background='#1a0d00';this.style.color='#06d6a0'">📂 Open Desktop</button>
           </div>
-          <!-- UPDATE APP — Manual + OTA -->
+          <!-- Update app.html -->
           <input type="file" id="nx-update-file" accept=".html" style="display:none;" onchange="nxDoAppUpdate(this)">
+          <input type="file" id="nx-update-mainjs-file" accept=".js" style="display:none;" onchange="nxDoMainJsUpdate(this)">
           <div style="background:#0e0a1a;border:1.5px solid #7c3aed;border-radius:10px;padding:16px;">
-            <div style="font-size:11px;color:#a78bfa;font-weight:700;letter-spacing:1px;margin-bottom:6px;">🔄 UPDATE APP</div>
-            <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.6;">
-              Drop a new <span style="color:#a78bfa;font-family:'IBM Plex Mono',monospace;">app.html</span> to update manually. Or use <strong style="color:#F5A623;">Check for Update</strong> in the header for auto update.
-            </div>
+            <div style="font-size:11px;color:#a78bfa;font-weight:700;letter-spacing:1px;margin-bottom:6px;">🔄 UPDATE app.html</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.6;">Drop a new <span style="color:#a78bfa;font-family:'IBM Plex Mono',monospace;">app.html</span> to update instantly. Or use <strong style="color:#F5A623;">Check for Update</strong> in the header.</div>
             <div id="nx-update-status" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;margin-bottom:10px;min-height:20px;">Choose file to begin update</div>
-            <button onclick="nxAskUpdateFile()" style="background:#1a0a3a;border:1.5px solid #7c3aed;color:#a78bfa;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='#7c3aed';this.style.color='#fff'" onmouseout="this.style.background='#1a0a3a';this.style.color='#a78bfa'">📁 Manual Update File</button>
+            <button onclick="nxAskUpdateFile()" style="background:#1a0a3a;border:1.5px solid #7c3aed;color:#a78bfa;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='#7c3aed';this.style.color='#fff'" onmouseout="this.style.background='#1a0a3a';this.style.color='#a78bfa'">📁 Update app.html (instant)</button>
+          </div>
+        </div>
+        <!-- Row 2: Update main.js + Rollback -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div style="background:#0e0a1a;border:1.5px solid #F5A623;border-radius:10px;padding:16px;">
+            <div style="font-size:11px;color:#F5A623;font-weight:700;letter-spacing:1px;margin-bottom:6px;">⚙️ UPDATE main.js</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.6;">Update <span style="color:#F5A623;font-family:'IBM Plex Mono',monospace;">main.js</span> server core — saves to data folder, takes effect after app restart.</div>
+            <div id="nx-mainjs-update-status" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;margin-bottom:8px;min-height:16px;"></div>
+            <button onclick="document.getElementById('nx-update-mainjs-file').click()" style="background:#1a0a00;border:1.5px solid #F5A623;color:#F5A623;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='#F5A623';this.style.color='#111'" onmouseout="this.style.background='#1a0a00';this.style.color='#F5A623'">⚙️ Update main.js (restart needed)</button>
+          </div>
+          <div style="background:#0a1200;border:1.5px solid #e63946;border-radius:10px;padding:16px;">
+            <div style="font-size:11px;color:#e63946;font-weight:700;letter-spacing:1px;margin-bottom:6px;">⏪ ROLLBACK</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.6;">Restore a previous version if something went wrong after an update. Last 5 versions are kept automatically.</div>
+            <button onclick="nxLoadRollbackList()" style="background:#1a0505;border:1.5px solid #e63946;color:#e63946;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;margin-bottom:10px;" onmouseover="this.style.background='#e63946';this.style.color='#fff'" onmouseout="this.style.background='#1a0505';this.style.color='#e63946'">🔍 View Rollback History</button>
+            <div id="nx-rollback-panel" style="display:none;">
+              <div style="font-size:10px;color:#F5A623;font-weight:700;letter-spacing:1px;margin-bottom:6px;">app.html versions</div>
+              <div id="nx-rollback-apphtml" style="margin-bottom:12px;"></div>
+              <div style="font-size:10px;color:#F5A623;font-weight:700;letter-spacing:1px;margin-bottom:6px;">main.js versions</div>
+              <div id="nx-rollback-mainjs"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -1573,7 +1629,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 <script>
 // ══════════════════════════════════════════════════════
 // NEXTIOM BILL POS — LICENSE PROTECTION SYSTEM v2.0
-var NX_APP_VERSION = '2.3';
+var NX_APP_VERSION = '2.1';
 // © 2026 Nextiom (Pvt) Ltd | lahirutharaka.com | 070 203 2323
 // Unauthorized modification or redistribution prohibited
 // ══════════════════════════════════════════════════════
@@ -2677,8 +2733,42 @@ try{
 refreshCount();
 refreshCustCount();
 
+// ── AUTO-NAVIGATE if opened via pop-out ──
+(function(){
+  var urlPage = new URLSearchParams(window.location.search).get('page');
+  if(urlPage) {
+    var _popInterval = setInterval(function(){
+      // Navigate once logged in (login screen hidden)
+      var ls = document.getElementById('nx-login-screen');
+      if(ls && ls.style.display === 'none' && NX_LOGGED_IN) {
+        clearInterval(_popInterval);
+        goPage(urlPage);
+      }
+    }, 150);
+    // Safety timeout after 10s
+    setTimeout(function(){ clearInterval(_popInterval); }, 10000);
+  }
+})();
+
+// ── POP OUT PAGE IN NEW WINDOW ──
+function nxPopOut(page) {
+  // Pass current session so new window skips login
+  var sessionToken = '';
+  try {
+    var token = 'NX_AUTO_' + btoa(getAdminPwd()).substring(0,8);
+    var role = NX_CURRENT_ROLE || 'owner';
+    var cashierId = (NX_CASHIER_OBJ && NX_CASHIER_OBJ.id) ? NX_CASHIER_OBJ.id : '';
+    sessionToken = '&nx_session=' + encodeURIComponent(token) + '&nx_role=' + role + (cashierId ? '&nx_cid=' + cashierId : '');
+  } catch(e) {}
+  var url = window.location.protocol + '//' + window.location.host + '/?page=' + page + sessionToken;
+  var w = window.open(url, '_blank', 'width=1400,height=900,menubar=no,toolbar=no,location=no,status=no');
+  if(w) w.focus();
+}
+
 // ── PAGE SWITCH ──
 function goPage(p) {
+  // Clean up any orphaned iframes (e.g. from IMG download or print operations)
+  document.querySelectorAll('body > iframe').forEach(function(f){ try{document.body.removeChild(f);}catch(e){} });
   ['pg-bill','pg-hist','pg-cust','pg-report','pg-cash','pg-settings','pg-credit'].forEach(id => {
     var el = document.getElementById(id); el.style.display='none'; el.style.width='';
   });
@@ -2767,6 +2857,20 @@ function selType(type) {
         '<span id="svc-calc-val" style="font-family:IBM Plex Mono,monospace;font-size:15px;font-weight:800;color:var(--or);">LKR 0.00</span>' +
         '</div>';
       i += 2;
+      continue;
+    }
+    // svc_charge gets a special waive toggle row
+    if(f.id === 'svc_charge') {
+      html += '<div style="display:flex;gap:6px;align-items:flex-end;">';
+      html += '<div class="fg" style="flex:1"><label>' + f.label + '</label><input type="text" id="f_svc_charge" placeholder="' + f.ph + '" value="' + (f.def||'') + '"></div>';
+      html += '<div style="padding-bottom:2px;">' +
+        '<button type="button" id="nx-waive-btn" onclick="nxToggleWaive()" ' +
+        'style="background:#1a0d00;border:1.5px solid #2a2a26;color:#555;padding:7px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:\'IBM Plex Sans\',sans-serif;white-space:nowrap;" ' +
+        'title="Waive service charge for this bill">✂ WAIVE</button>' +
+        '</div>';
+      html += '</div>';
+      html += '<div id="nx-waive-notice" style="display:none;font-size:10px;color:#F5A623;margin-top:-4px;margin-bottom:4px;letter-spacing:0.5px;">✂ Service charge will be waived on this bill</div>';
+      i++;
       continue;
     }
     html += '<div class="fg"><label>' + f.label + '</label>';
@@ -2998,6 +3102,21 @@ function calcServiceTotal() {
 }
 
 // ── ADD BILL TO CART ──
+var _nxWaiveSvc = false; // waive state for current form
+function nxToggleWaive() {
+  _nxWaiveSvc = !_nxWaiveSvc;
+  var btn = document.getElementById('nx-waive-btn');
+  var notice = document.getElementById('nx-waive-notice');
+  if(_nxWaiveSvc) {
+    btn.style.background = '#F5A623'; btn.style.color = '#111'; btn.style.borderColor = '#F5A623';
+    btn.textContent = '✂ WAIVED';
+    if(notice) notice.style.display = 'block';
+  } else {
+    btn.style.background = '#1a0d00'; btn.style.color = '#555'; btn.style.borderColor = '#2a2a26';
+    btn.textContent = '✂ WAIVE';
+    if(notice) notice.style.display = 'none';
+  }
+}
 function addBill() {
   if(!curType) return;
   var cfg = TYPES[curType];
@@ -3020,6 +3139,7 @@ function addBill() {
   }
   b.amount = parseFloat(b.amount) || 0;
   b.svc_charge = parseFloat(b.svc_charge) || 0;
+  b.svc_waived = _nxWaiveSvc; // capture waive state
   if(!b.amount) { alert('Please enter the bill amount!'); return; }
 
   // ── SERVICES: auto-merge identical items into qty ──
@@ -3050,6 +3170,12 @@ function addBill() {
     var el = document.getElementById('f_'+f.id);
     if(el && f.type !== 'select') el.value = (f.id==='svc_charge') ? '0.00' : (f.id==='qty') ? '1' : '';
   });
+  // Reset waive state
+  _nxWaiveSvc = false;
+  var waiveBtn = document.getElementById('nx-waive-btn');
+  var waiveNotice = document.getElementById('nx-waive-notice');
+  if(waiveBtn) { waiveBtn.style.background='#1a0d00'; waiveBtn.style.color='#555'; waiveBtn.style.borderColor='#2a2a26'; waiveBtn.textContent='✂ WAIVE'; }
+  if(waiveNotice) waiveNotice.style.display='none';
   // Clear qty calc display
   var totDiv = document.getElementById('svc-calc-total');
   if(totDiv) totDiv.style.display = 'none';
@@ -3070,7 +3196,7 @@ function renderCart() {
   if(!cart.length) { el.innerHTML = '<div class="cart-empty">No bills added yet</div>'; return; }
   var html = '';
   cart.forEach(function(b) {
-    var tot = b.amount + b.svc_charge;
+    var tot = b.amount + (b.svc_waived?0:b.svc_charge);
     var op = b.operator || b.cfg.company || '';
     var sub = [b.cust_name||b.mobile_no||b.service_name, op, b.bill_month].filter(Boolean).join(' · ');
     var qtyBadge = '';
@@ -3080,14 +3206,14 @@ function renderCart() {
       unitInfo = '<div class="ci-unit">LKR '+b._unitPrice.toFixed(2)+' each</div>';
     }
     html += '<div class="cart-item"><div class="ci-info">' +
-      '<div class="ci-name">' + b.cfg.icon + ' ' + b.cfg.label + qtyBadge + '</div>' +
+      '<div class="ci-name">' + b.cfg.icon + ' ' + b.cfg.label + qtyBadge + (b.svc_waived ? '<span style="font-size:9px;background:#2a1a00;color:#F5A623;border:1px solid #F5A623;border-radius:3px;padding:1px 5px;margin-left:6px;font-weight:800;">✂ SVC WAIVED</span>' : '') + '</div>' +
       '<div class="ci-sub">' + sub + '</div>' + unitInfo +
       '</div>' +
-      '<div class="ci-amt">LKR ' + tot.toFixed(2) + '</div>' +
+      '<div class="ci-amt">LKR ' + tot.toFixed(2) + (b.svc_waived && b.svc_charge>0 ? '<div style="font-size:9px;color:#888;text-decoration:line-through;">+'+b.svc_charge.toFixed(2)+' svc</div>' : '') + '</div>' +
       '<button class="ci-del" onclick="removeBill(' + b.id + ')">✕</button></div>';
   });
   var bT = cart.reduce(function(s,b){return s+b.amount;},0);
-  var sT = cart.reduce(function(s,b){return s+b.svc_charge;},0);
+  var sT = cart.reduce(function(s,b){return s+(b.svc_waived?0:b.svc_charge);},0);
   var gT = bT+sT;
   html += '<div class="cart-sum"><div class="csr"><span>Bills subtotal</span><span>LKR ' + bT.toFixed(2) + '</span></div>' +
     (sT>0?'<div class="csr"><span>Service charges</span><span>LKR ' + sT.toFixed(2) + '</span></div>':'') +
@@ -3098,7 +3224,7 @@ function renderCart() {
 // ── CASH CALCULATOR ──
 function calcChange() {
   var bT = cart.reduce(function(s,b){return s+b.amount;},0);
-  var sT = cart.reduce(function(s,b){return s+b.svc_charge;},0);
+  var sT = cart.reduce(function(s,b){return s+(b.svc_waived?0:b.svc_charge);},0);
   var gT = bT+sT;
   var cash = parseFloat(document.getElementById('cash_in').value)||0;
   var bal = cash-gT;
@@ -3153,7 +3279,7 @@ function renderReceipt() {
     return;
   }
   var bT = cart.reduce(function(s,b){return s+b.amount;},0);
-  var sT = cart.reduce(function(s,b){return s+b.svc_charge;},0);
+  var sT = cart.reduce(function(s,b){return s+(b.svc_waived?0:b.svc_charge);},0);
   var gT = bT+sT;
   var cash = parseFloat(document.getElementById('cash_in').value)||0;
   var bal = cash-gT;
@@ -3185,7 +3311,9 @@ function renderReceipt() {
       (b.type==='print' && b.qty>1 ? rr('QTY', b.qty + ' × LKR ' + (b._unitPrice||0).toFixed(2)) : '') +
       (b.type==='print' && b.qty===1 && b._unitPrice ? rr('UNIT PRICE','LKR '+(b._unitPrice||0).toFixed(2)) : '') +
       '<div class="rr" style="font-weight:600;"><span>'+(b.qty>1?'TOTAL AMT':'BILL AMT')+'</span><span class="rv">LKR '+b.amount.toFixed(2)+'</span></div>' +
-      (b.svc_charge>0 ? rr('SVC CHARGE','LKR '+b.svc_charge.toFixed(2)) : '') +
+      (b.svc_charge>0 ? (b.svc_waived
+        ? '<div class="rr"><span>SVC CHARGE</span><span class="rv"><span style="text-decoration:line-through;opacity:0.45;">LKR '+b.svc_charge.toFixed(2)+'</span> <span style="font-style:italic;">waived</span></span></div>'
+        : rr('SVC CHARGE','LKR '+b.svc_charge.toFixed(2))) : '') +
       (b.bank_ref ? rr('REFERENCE',b.bank_ref) : '') +
       (i<cart.length-1 ? '<hr class="rd">' : '');
   });
@@ -3204,6 +3332,7 @@ function renderReceipt() {
     '<hr class="rd">' + billsHtml + '<hr class="rds">' +
     (cart.length>1 ? rr('BILLS SUBTOTAL','LKR '+bT.toFixed(2)) : '') +
     (cart.length>1&&sT>0 ? rr('SVC CHARGES','LKR '+sT.toFixed(2)) : '') +
+    (function(){ var w=cart.reduce(function(s,b){return s+(b.svc_waived?b.svc_charge:0);},0); return w>0?'<div class="rr" style="font-style:italic;opacity:0.6;"><span>YOU SAVED</span><span class="rv">- LKR '+w.toFixed(2)+'</span></div>':''; })() +
     '<div class="rtot"><span>TOTAL PAID</span><span>LKR '+gT.toFixed(2)+'</span></div>' +
     (cash>0 ? '<hr class="rd">'+rr('CASH RECEIVED','LKR '+cash.toFixed(2))+'<div class="rr" style="font-weight:700;"><span>BALANCE</span><span class="rv">LKR '+bal.toFixed(2)+'</span></div>' : '') +
     '<hr class="rd"><div class="rsm">PAYMENT RECEIVED IN FULL</div>' +
@@ -3214,7 +3343,7 @@ function renderReceipt() {
 // ── SAVE TO SERVER ──
 async function saveRecord() {
   var bT = cart.reduce(function(s,b){return s+b.amount;},0);
-  var sT = cart.reduce(function(s,b){return s+b.svc_charge;},0);
+  var sT = cart.reduce(function(s,b){return s+(b.svc_waived?0:b.svc_charge);},0);
   var gT = bT+sT;
   var cash = parseFloat(document.getElementById('cash_in').value)||0;
   var names = cart.map(function(b){return b.cust_name||b.service_name||'';}).filter(Boolean);
@@ -3234,7 +3363,7 @@ async function saveRecord() {
       customer:b.cust_name||b.service_name||'',
       cust_phone:b.cust_phone||'',
       account:b.account_no||'', operator:b.operator||b.cfg.company||'',
-      period:b.bill_month||'', units:b.units||'', amount:b.amount, svc:b.svc_charge, bank_ref:b.bank_ref||''
+      period:b.bill_month||'', units:b.units||'', amount:b.amount, svc:b.svc_charge, svc_waived:b.svc_waived||false, bank_ref:b.bank_ref||''
     };}),
     billsTotal:bT, svcTotal:sT, grandTotal:gT, cashReceived:cash, balance:cash-gT
   };
@@ -3244,6 +3373,8 @@ async function saveRecord() {
     var r = await res.json();
     refreshCount(r.total);
     addToSession(rec);
+    // Auto-create/update customer profiles from bill data
+    await nxAutoUpsertProfiles(cart);
     // Log each bill type saved
     var billSummary = cart.map(function(b){return b.cfg.label+(b.cust_name?' ('+b.cust_name+')':'');}).join(', ');
     sysLog('BILL','Bill Saved','TXN: '+rec.id+' | Customer: '+(rec.customer||'—')+' | Total: LKR '+gT.toFixed(2), billSummary);
@@ -3406,10 +3537,17 @@ function openUserGuide() {
 }
 
 function doRefresh() {
-  nxConfirm('🔄 System Refresh','This will clear the current cart and reload the page.',function(){location.reload();},false); return;
-  sysLog('SYSTEM', 'System Refresh', 'Page reloaded for fresh session');
-  try { localStorage.removeItem('nx_session_' + nowDate()); } catch(e){}
-  window.location.reload();
+  nxConfirm('🔄 System Refresh', 'Reload the app without logging out?', function() {
+    // Save session so login is skipped on reload
+    try {
+      var token = 'NX_AUTO_' + btoa(getAdminPwd()).substring(0,8);
+      sessionStorage.setItem('nx_refresh_token', token);
+      sessionStorage.setItem('nx_refresh_role', NX_CURRENT_ROLE || 'owner');
+      if (NX_CASHIER_OBJ && NX_CASHIER_OBJ.id) sessionStorage.setItem('nx_refresh_cid', NX_CASHIER_OBJ.id);
+    } catch(e) {}
+    sysLog('SYSTEM', 'System Refresh', 'Page reloaded without logout');
+    location.reload();
+  }, false);
 }
 
 // ══════════════════════════════════════════
@@ -3535,7 +3673,7 @@ function buildWAMsg() {
   var ref = 'TXN'+Date.now().toString().slice(-8);
   window._lastSavedId = ref; // store for WhatsApp receipt link
   var bT = cart.reduce(function(s,b){return s+b.amount;},0);
-  var sT = cart.reduce(function(s,b){return s+b.svc_charge;},0);
+  var sT = cart.reduce(function(s,b){return s+(b.svc_waived?0:b.svc_charge);},0);
   var gT = bT+sT;
   var cash = parseFloat(document.getElementById('cash_in').value)||0;
   var bal = cash-gT;
@@ -3561,7 +3699,7 @@ function buildWAMsg() {
     if(b.units) m += '   Units    : ' + b.units + '\n';
     if(b.package) m += '   Package  : ' + b.package + '\n';
     m += '   Amount   : LKR ' + b.amount.toFixed(2) + '\n';
-    if(b.svc_charge>0) m += '   Svc Chg  : LKR ' + b.svc_charge.toFixed(2) + '\n';
+    if(b.svc_charge>0) m += '   Svc Chg  : ' + (b.svc_waived ? 'WAIVED (was LKR '+b.svc_charge.toFixed(2)+')' : 'LKR '+b.svc_charge.toFixed(2)) + '\n';
     if(b.bank_ref) m += '   Reference: ' + b.bank_ref + '\n';
   });
   m += '\n━━━━━━━━━━━━━━━━━━━━\n';
@@ -3770,23 +3908,28 @@ async function downloadHistPNG(id) {
   iframe.contentDocument.write(html);
   iframe.contentDocument.close();
 
-  tmp = iframe.contentDocument.body;
+  var tmp = iframe.contentDocument.body;
+  function safeRemoveIframe(){ try{ if(iframe.parentNode) document.body.removeChild(iframe); }catch(e){} }
 
   setTimeout(function() {
-    // Resize iframe to fit content exactly - no empty space
-    var h = iframe.contentDocument.documentElement.scrollHeight;
-    iframe.style.height = h + 'px';
-    html2canvas(tmp, {backgroundColor:'#ffffff', scale:2, logging:false, allowTaint:true, height:h, windowHeight:h}).then(function(canvas){
-      document.body.removeChild(iframe);
-      var link = document.createElement('a');
-      var name = (rec.customer||'Receipt').replace(/\s+/g,'_');
-      link.download = 'NEXTIOM_'+name+'_'+rec.date+'.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    }).catch(function(e){
-      document.body.removeChild(iframe);
+    try {
+      var h = iframe.contentDocument.documentElement.scrollHeight;
+      iframe.style.height = h + 'px';
+      html2canvas(tmp, {backgroundColor:'#ffffff', scale:2, logging:false, allowTaint:true, height:h, windowHeight:h}).then(function(canvas){
+        safeRemoveIframe();
+        var link = document.createElement('a');
+        var name = (rec.customer||'Receipt').replace(/\s+/g,'_');
+        link.download = 'NEXTIOM_'+name+'_'+rec.date+'.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(function(e){
+        safeRemoveIframe();
+        alert('Could not generate image: '+e.message);
+      });
+    } catch(e) {
+      safeRemoveIframe();
       alert('Could not generate image: '+e.message);
-    });
+    }
   }, 300);
 }
 
@@ -3810,6 +3953,13 @@ async function loadHistory() {
   refreshCount(all.length);
   // Sort newest first
   filtered.sort(function(a,b){ return new Date(b.datetime||0) - new Date(a.datetime||0); });
+  // Build customer total-bills count from ALL records (not just filtered)
+  var custBillCount = {};
+  all.forEach(function(rec){
+    rec.bills.forEach(function(b){
+      if(b.customer){ var k=b.customer.toLowerCase(); custBillCount[k]=(custBillCount[k]||0)+1; }
+    });
+  });
   document.getElementById('hs-cnt').textContent = filtered.length;
   var tot = filtered.reduce(function(s,r){return s+(r.grandTotal||0);},0);
   var svc = filtered.reduce(function(s,r){return s+(r.svcTotal||0);},0);
@@ -3826,33 +3976,43 @@ async function loadHistory() {
     '<div class="htable-head">' +
       '<span>TXN ID</span>' +
       '<span>TYPE</span>' +
-      '<span>CUSTOMER / ACCOUNT</span>' +
+      '<span>CUSTOMER</span>' +
+      '<span>ACCOUNT</span>' +
+      '<span>BILLS</span>' +
       '<span class="hth-r">DATE &amp; TIME</span>' +
       '<span class="hth-r">AMOUNT</span>' +
       '<span class="hth-r">ACTIONS</span>' +
     '</div>';
   filtered.forEach(function(r) {
     var custs = r.bills.map(function(b){return b.customer;}).filter(function(v,i,a){return v&&a.indexOf(v)===i;}).join(', ');
-    var accts = r.bills.map(function(b){return b.account;}).filter(Boolean).join(', ');
-    var dispName = custs || accts || '-';
+    var accts = r.bills.map(function(b){return b.account;}).filter(Boolean).filter(function(v,i,a){return a.indexOf(v)===i;}).join(', ');
+    var dispName = custs || '-';
+    var dispAcct = accts || '-';
+    // Bills summary: operator/label + amount per bill
+    var billsSummary = r.bills.map(function(b){
+      var lbl = b.operator || b.label || '';
+      var amt = parseFloat(b.amount||0).toFixed(2);
+      return '<div class="hb-item"><span style="color:#666;">'+lbl+'</span> <span class="hb-amt">'+amt+'</span></div>';
+    }).join('');
     var dt = new Date(r.datetime);
     var tm = isNaN(dt)?'':dt.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
     var typeClrs = {electricity:'#f5a623',water:'#4a90d9',phone:'#06d6a0',internet:'#a855f7',tv:'#e63946',other:'#888'};
     var tags = r.bills.map(function(b){
       var cl = typeClrs[b.type]||'#888';
-      return '<span class="htag" style="color:'+cl+';border:1px solid '+cl+'44;background:'+cl+'18">'+b.icon+' '+b.label+'</span>';
-    }).join('<br>');
-    var detailLines = r.bills.map(function(b){
-      var ln = '<span><strong>'+b.icon+' '+b.label+'</strong>';
-      if(b.customer) ln += ' &nbsp; '+b.customer;
-      if(b.account)  ln += ' &nbsp; Acct: <strong>'+b.account+'</strong>';
-      if(b.operator) ln += ' ('+b.operator+')';
-      if(b.period)   ln += ' &nbsp; '+b.period;
-      if(b.bank_ref) ln += ' &nbsp; Ref: <strong>'+b.bank_ref+'</strong>';
-      if(b.amount)   ln += ' &nbsp; LKR '+parseFloat(b.amount||0).toFixed(2);
-      if(b.svc&&b.svc>0) ln += ' &nbsp; SVC: '+parseFloat(b.svc).toFixed(2);
-      return ln+'</span>';
+      return '<div style="width:fit-content;margin-bottom:2px;"><span class="htag" style="color:'+cl+';border:1px solid '+cl+'44;background:'+cl+'18">'+b.icon+' '+b.label+'</span></div>';
     }).join('');
+    var detailLines = r.bills.map(function(b){
+      var parts = [];
+      if(b.customer) parts.push(b.customer);
+      if(b.account)  parts.push('Acct: <strong>'+b.account+'</strong>');
+      if(b.operator) parts.push('('+b.operator+')');
+      if(b.period)   parts.push(b.period);
+      if(b.bank_ref) parts.push('Ref: <strong>'+b.bank_ref+'</strong>');
+      if(b.amount)   parts.push('LKR '+parseFloat(b.amount||0).toFixed(2));
+      if(b.svc&&b.svc>0) parts.push('SVC: '+parseFloat(b.svc).toFixed(2)+(b.svc_waived?' (waived)':''));
+      if(!parts.length) return '';
+      return '<span><strong>'+b.icon+' '+b.label+'</strong> &nbsp; '+parts.join(' &nbsp; ')+'</span>';
+    }).filter(Boolean).join('');
     var cashLine = r.cashReceived>0 ? '<span>Cash: LKR '+r.cashReceived.toFixed(2)+' &nbsp; Bal: LKR '+(r.balance||0).toFixed(2)+'</span>' : '';
     var cashierLine = r.cashier ? '<span>Cashier: '+r.cashier+'</span>' : '';
     html +=
@@ -3860,7 +4020,12 @@ async function loadHistory() {
         '<div class="hrec-main">' +
           '<div class="hcol-id">'+r.id+(r.isCredit?'<span class="hcredit-badge'+(r.creditStatus==="paid"?' paid':'')+'">CREDIT</span>':'')+'</div>' +
           '<div class="hcol-type">'+tags+'</div>' +
-          '<div class="hcol-cust" title="'+dispName+'">'+dispName+'</div>' +
+          '<div class="hcust-wrap" onclick="event.stopPropagation();'+(dispName!=='-'?'showCustHistoryByName(\''+dispName.replace(/'/g,"\\'")+'\')':'')+'" title="'+(dispName!=='-'?'View all payments by '+dispName.replace(/'/g,"\\'"):'No customer name')+'">'+
+            '<div class="hcust-name">'+dispName+'</div>'+
+            (dispName!=='-' ? (function(){var cnt=custBillCount[dispName.toLowerCase()]||0; return cnt>1?'<div class="hcust-sub">📋 '+cnt+' bills on record</div>':'<div class="hcust-sub">📋 view history</div>';})() : '')+
+          '</div>' +
+          '<div class="hcol-acct" title="'+dispAcct+'">'+dispAcct+'</div>' +
+          '<div class="hcol-bills">'+billsSummary+'</div>' +
           '<div class="hcol-date">'+r.date+(tm?'<br>'+tm:'')+'</div>' +
           '<div class="hcol-amount">'+( r.grandTotal||0).toFixed(2)+(r.cashReceived>0?'<br><span style="font-size:9px;color:#555">Bal '+(r.balance||0).toFixed(2)+'</span>':'')+'</div>' +
           '<div class="hcol-actions">' +
@@ -3876,7 +4041,7 @@ async function loadHistory() {
                 return '<div style="margin-bottom:5px;padding-bottom:5px;border-bottom:1px dashed #2a2a26;"><span style="color:#c8821a;font-weight:700;">Edit #'+(i+1)+'</span> &nbsp;<span style="color:#666;">'+e.date+' '+e.time+'</span>'+(e.by?' &nbsp;<span style="color:#555;">by '+e.by+'</span>':'')+'<br><span style="color:#aaa;">'+chg+'</span></div>';
               }).join('');
               return '<button class="hedit was-edited" onclick="event.stopPropagation();editRec(\''+r.id+'\')">' +
-                '✏️ Edited<span class="edit-count">×'+ec+'</span>' +
+                '✏️ Edit<span class="edit-count">'+ec+'</span>' +
                 '<div class="edit-tooltip"><div style="color:#c8821a;font-weight:800;letter-spacing:1px;margin-bottom:6px;font-size:10px;">EDIT HISTORY</div>'+tooltipRows+'</div>' +
               '</button>';
             })() +
@@ -3918,7 +4083,9 @@ async function reprintRec(id) {
         (showBillCust?rr('CUSTOMER',b.customer):'') + (b.account?rr('ACC NO',b.account):'') +
         (b.period?rr('PERIOD',b.period):'') +
         '<div class="rr" style="font-weight:600;"><span>BILL AMT</span><span class="rv">LKR '+b.amount.toFixed(2)+'</span></div>' +
-        (b.svc>0?rr('SVC CHARGE','LKR '+b.svc.toFixed(2)):'') +
+        (b.svc>0?(b.svc_waived
+          ?'<div class="rr"><span>SVC CHARGE</span><span class="rv"><span style="text-decoration:line-through;opacity:0.45;">LKR '+b.svc.toFixed(2)+'</span> <span style="font-style:italic;">waived</span></span></div>'
+          :rr('SVC CHARGE','LKR '+b.svc.toFixed(2))):'') +
         (b.bank_ref?rr('REFERENCE',b.bank_ref):'') +
         (i<r.bills.length-1?'<hr class="rd">':'');
     });
@@ -3931,6 +4098,7 @@ async function reprintRec(id) {
       '<hr class="rd">'+bH+'<hr class="rds">' +
       (r.bills.length>1?rr('BILLS SUBTOTAL','LKR '+bT.toFixed(2)):'') +
       (r.bills.length>1&&sT>0?rr('SVC CHARGES','LKR '+sT.toFixed(2)):'') +
+      (function(){ var w=r.bills.reduce(function(s,b){return s+(b.svc_waived?b.svc:0);},0); return w>0?'<div class="rr" style="font-style:italic;opacity:0.6;"><span>YOU SAVED</span><span class="rv">- LKR '+w.toFixed(2)+'</span></div>':''; })() +
       '<div class="rtot"><span>TOTAL PAID</span><span>LKR '+gT.toFixed(2)+'</span></div>' +
       (cash>0?'<hr class="rd">'+rr('CASH RECEIVED','LKR '+cash.toFixed(2))+'<div class="rr" style="font-weight:700;"><span>BALANCE</span><span class="rv">LKR '+bal.toFixed(2)+'</span></div>':'') +
       '<hr class="rd"><div class="rsm">PAYMENT RECEIVED IN FULL</div><hr class="rd">' +
@@ -4047,7 +4215,6 @@ function nxInitLogin() {
   var licWall = document.getElementById('nx-license-wall');
   var licActive = licWall && licWall.style.display !== 'none';
   if(licActive) {
-    // License wall active — hide login, let license wall handle
     document.getElementById('nx-login-screen').style.display = 'none';
     return;
   }
@@ -4058,6 +4225,52 @@ function nxInitLogin() {
   } catch(e) {}
   // Load password from server first (fixes password not persisting after reload)
   nxLoadSettingsFromServer(function() {
+    // ── Check if this is a soft refresh (no logout) ──
+    try {
+      var refreshToken = sessionStorage.getItem('nx_refresh_token');
+      var expectedToken = 'NX_AUTO_' + btoa(getAdminPwd()).substring(0,8);
+      if (refreshToken && refreshToken === expectedToken) {
+        sessionStorage.removeItem('nx_refresh_token');
+        var role = sessionStorage.getItem('nx_refresh_role') || 'owner';
+        var cid  = sessionStorage.getItem('nx_refresh_cid') || '';
+        sessionStorage.removeItem('nx_refresh_role');
+        sessionStorage.removeItem('nx_refresh_cid');
+        NX_LOGGED_IN = true;
+        NX_CURRENT_ROLE = role;
+        if (role === 'cashier' && cid) {
+          var found = (profileCache || []).find(function(p){ return p.id == cid; });
+          NX_CASHIER_OBJ = found || { id: cid, name: 'Cashier' };
+        } else {
+          NX_CASHIER_OBJ = null;
+        }
+        document.getElementById('nx-login-screen').style.display = 'none';
+        nxApplyRoleUI();
+        return;
+      }
+    } catch(e) {}
+    // ── Check if opened as pop-out with valid session token ──
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var sessionToken = params.get('nx_session');
+      var expectedToken = 'NX_AUTO_' + btoa(getAdminPwd()).substring(0,8);
+      if(sessionToken && sessionToken === expectedToken) {
+        // Valid session — auto login without password
+        var role = params.get('nx_role') || 'owner';
+        var cashierId = params.get('nx_cid') || '';
+        NX_LOGGED_IN = true;
+        NX_CURRENT_ROLE = role;
+        if(role === 'cashier' && cashierId) {
+          // Find cashier object
+          var found = (profileCache || []).find(function(p){ return p.id == cashierId; });
+          NX_CASHIER_OBJ = found || { id: cashierId, name: 'Cashier' };
+        } else {
+          NX_CASHIER_OBJ = null;
+        }
+        document.getElementById('nx-login-screen').style.display = 'none';
+        nxApplyRoleUI();
+        return;
+      }
+    } catch(e) {}
     nxShowLogin();
   });
 }
@@ -4532,10 +4745,13 @@ async function nxRemoteUpdateCheck() {
     var data = await res.json();
     btn.disabled = false;
     if (!data.version) throw new Error('Invalid response');
-    var latest = data.version;
-    var current = NX_APP_VERSION;
-    if (latest === current) {
-      btn.textContent = '✅ Up to Date';
+    var latest = data.version.toString().trim();
+    var current = NX_APP_VERSION.toString().trim();
+    console.log('[NEXTIOM Update] Installed: v' + current + ' | GitHub: v' + latest);
+    // Compare as floats so 2.3 > 2.2, 2.10 > 2.9 etc.
+    var isNewer = parseFloat(latest) > parseFloat(current);
+    if (!isNewer) {
+      btn.textContent = '✅ Up to Date (v' + current + ')';
       btn.style.borderColor = '#F5A623'; btn.style.color = '#F5A623';
       btn.onmouseover = function(){ this.style.background='#F5A623';this.style.color='#111'; };
       btn.onmouseout  = function(){ this.style.background='#1a0d00';this.style.color='#F5A623'; };
@@ -4554,6 +4770,7 @@ async function nxRemoteUpdateCheck() {
     btn.disabled = false;
     btn.textContent = '⚠️ No Connection';
     btn.style.borderColor = '#e63946'; btn.style.color = '#e63946';
+    console.error('[NEXTIOM Update] Check failed:', e.message);
     setTimeout(function(){ nxResetUpdateBtn(); }, 3000);
   }
 }
@@ -4608,20 +4825,23 @@ function nxSilentUpdateCheck() {
       if (!res.ok) return;
       var data = await res.json();
       if (!data.version) return;
-      if (data.version !== NX_APP_VERSION) {
+      var latest = data.version.toString().trim();
+      var current = NX_APP_VERSION.toString().trim();
+      console.log('[NEXTIOM Silent Check] Installed: v' + current + ' | GitHub: v' + latest);
+      if (parseFloat(latest) > parseFloat(current)) {
         var badge = document.getElementById('nx-ver-badge');
-        if (badge) badge.innerHTML = '<span style="color:#F5A623;font-weight:800;">🆕 v'+data.version+' available</span>';
+        if (badge) badge.innerHTML = '<span style="color:#F5A623;font-weight:800;">🆕 v'+latest+' available</span>';
         var btn = document.getElementById('nx-update-btn');
         if (btn) {
-          btn.innerHTML = '⬇️ Install <span style="background:#F5A623;color:#111;padding:1px 7px;border-radius:4px;font-size:12px;font-weight:900;">v' + data.version + '</span>';
+          btn.innerHTML = '⬇️ Install <span style="background:#F5A623;color:#111;padding:1px 7px;border-radius:4px;font-size:12px;font-weight:900;">v' + latest + '</span>';
           btn.style.borderColor = '#F5A623'; btn.style.color = '#F5A623';
           btn.style.background = '#1a0d00';
           btn.onmouseover = function(){ this.style.background='#F5A623';this.style.color='#111'; };
           btn.onmouseout  = function(){ this.style.background='#1a0d00';this.style.color='#F5A623'; };
-          btn.onclick = function(){ nxRemoteInstall(data.version); };
+          btn.onclick = function(){ nxRemoteInstall(latest); };
         }
       }
-    } catch(e) { /* silent — no internet or server down */ }
+    } catch(e) { console.warn('[NEXTIOM Silent Check] Failed:', e.message); }
   }, 5000);
 }
 
@@ -4629,6 +4849,110 @@ function nxAskUpdateFile() {
   nxConfirm('🔄 Update App', 'Admin password required to update the app.', function() {
     document.getElementById('nx-update-file').click();
   }, true);
+}
+
+async function nxLoadRollbackList() {
+  var panel = document.getElementById('nx-rollback-panel');
+  panel.style.display = 'block';
+  document.getElementById('nx-rollback-apphtml').innerHTML = '<span style="color:#555;font-size:10px;">Loading...</span>';
+  document.getElementById('nx-rollback-mainjs').innerHTML  = '<span style="color:#555;font-size:10px;">Loading...</span>';
+  try {
+    var res = await fetch(API + '/rollback-list');
+    var data = await res.json();
+    document.getElementById('nx-rollback-apphtml').innerHTML = nxRenderRollbackSlots(data.apphtml || [], 'apphtml');
+    document.getElementById('nx-rollback-mainjs').innerHTML  = nxRenderRollbackSlots(data.mainjs  || [], 'mainjs');
+  } catch(e) {
+    document.getElementById('nx-rollback-apphtml').innerHTML = '<span style="color:#e63946;font-size:10px;">Failed to load</span>';
+    document.getElementById('nx-rollback-mainjs').innerHTML  = '<span style="color:#e63946;font-size:10px;">Failed to load</span>';
+  }
+}
+
+function nxRenderRollbackSlots(slots, type) {
+  if (!slots.length) return '<div style="color:#555;font-size:10px;margin-bottom:6px;">No backups yet</div>';
+  return slots.map(function(s) {
+    var d = s.ts ? new Date(s.ts).toLocaleString() : 'Unknown date';
+    var kb = s.size ? (s.size/1024).toFixed(0) + ' KB' : '';
+    var label = s.label || '';
+    var needsRestart = type === 'mainjs' ? ' (restart needed)' : '';
+    return '<div style="display:flex;align-items:center;justify-content:space-between;background:#0d0d0b;border:1px solid #2a2a26;border-radius:6px;padding:6px 10px;margin-bottom:5px;">' +
+      '<div>' +
+        '<div style="font-size:10px;color:#ccc;font-weight:600;">' + d + '</div>' +
+        '<div style="font-size:9px;color:#555;">' + label + (kb ? ' · ' + kb : '') + needsRestart + '</div>' +
+      '</div>' +
+      '<button onclick="nxDoRollback(\'' + type + '\',' + s.slot + ')" style="background:#1a0505;border:1px solid #e63946;color:#e63946;padding:4px 10px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;" onmouseover="this.style.background=\'#e63946\';this.style.color=\'#fff\'" onmouseout="this.style.background=\'#1a0505\';this.style.color=\'#e63946\'">⏪ Restore</button>' +
+    '</div>';
+  }).join('');
+}
+
+async function nxDoRollback(type, slot) {
+  var label = type === 'apphtml' ? 'app.html' : 'main.js';
+  var extra = type === 'mainjs' ? '\n\nThe app will need to be restarted after rollback.' : '\n\nThe app will reload after rollback.';
+  nxConfirm('⏪ Rollback ' + label, 'Restore this previous version of ' + label + '?' + extra, async function() {
+    try {
+      var res = await fetch(API + '/rollback', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ type: type, slot: slot })
+      });
+      var data = await res.json();
+      if (data.success) {
+        nxToast('✅ ' + label + ' rolled back successfully!' + (type === 'mainjs' ? ' Please restart the app.' : ' Reloading...'), 4000);
+        sysLog('SYSTEM', 'Rollback', label + ' rolled back to slot ' + slot);
+        if (type === 'apphtml') setTimeout(function(){ location.reload(); }, 2000);
+        else nxLoadRollbackList();
+      } else {
+        nxToast('❌ Rollback failed: ' + (data.error || 'Unknown error'), 4000);
+      }
+    } catch(e) {
+      nxToast('❌ Rollback error: ' + e.message, 4000);
+    }
+  }, true);
+}
+
+async function nxDoMainJsUpdate(input) {
+  var file = input.files[0];
+  var statusEl = document.getElementById('nx-mainjs-update-status');
+  if (!file) return;
+  statusEl.style.color = '#a78bfa';
+  statusEl.textContent = '⏳ Reading file...';
+  var reader = new FileReader();
+  reader.onload = async function(e) {
+    var content = e.target.result;
+    if (!content.includes('NEXTIOM') || !content.includes('express')) {
+      statusEl.style.color = '#e63946';
+      statusEl.textContent = '❌ Invalid file. Please select a valid NEXTIOM main.js file.';
+      input.value = '';
+      return;
+    }
+    statusEl.textContent = '⏳ Saving...';
+    try {
+      var res = await fetch(API + '/update-mainjs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ js: content })
+      });
+      var data = await res.json();
+      if (data.success) {
+        statusEl.style.color = '#06d6a0';
+        statusEl.textContent = '✅ Saved! Close and reopen the app to apply.';
+        sysLog('SYSTEM', 'Main.js Updated', 'main.js replaced via in-app updater');
+        nxToast('✅ main.js saved! Restart the app to apply changes.', 5000);
+      } else {
+        statusEl.style.color = '#e63946';
+        statusEl.textContent = '❌ Failed: ' + (data.error || 'Unknown error');
+      }
+    } catch(err) {
+      statusEl.style.color = '#e63946';
+      statusEl.textContent = '❌ Error: ' + err.message;
+    }
+    input.value = '';
+  };
+  reader.onerror = function() {
+    statusEl.style.color = '#e63946';
+    statusEl.textContent = '❌ Could not read file.';
+    input.value = '';
+  };
+  reader.readAsText(file);
 }
 
 async function nxDoAppUpdate(input) {
@@ -5260,15 +5584,90 @@ var BILL_TYPES_MAP = {
   print:{icon:'🖨️',label:'PRINT SHOP'}
 };
 
+// ── FAVOURITE CARD DRAG & DROP ──
+var _nxDragPid = null;
+
+function nxDragStart(e) {
+  _nxDragPid = e.currentTarget.dataset.pid;
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+
+function nxDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  var card = e.currentTarget;
+  if(card.dataset.pid !== _nxDragPid) card.classList.add('drag-over');
+}
+
+function nxDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+
+function nxDrop(e) {
+  e.preventDefault();
+  var targetPid = e.currentTarget.dataset.pid;
+  e.currentTarget.classList.remove('drag-over');
+  if(!_nxDragPid || _nxDragPid === targetPid) { _nxDragPid = null; return; }
+
+  // Reorder profileCache favs
+  var favs = profileCache.filter(function(p){ return !!p.favorite; });
+  var fromIdx = favs.findIndex(function(p){ return p.id === _nxDragPid; });
+  var toIdx   = favs.findIndex(function(p){ return p.id === targetPid; });
+  if(fromIdx < 0 || toIdx < 0) { _nxDragPid = null; return; }
+
+  // Move item
+  var moved = favs.splice(fromIdx, 1)[0];
+  favs.splice(toIdx, 0, moved);
+
+  // Save FULL new order to localStorage (all fav IDs in new position)
+  var order = favs.map(function(p){ return p.id; });
+  try { localStorage.setItem('nx_fav_order', JSON.stringify(order)); } catch(e){}
+  // Also update profileCache order to match
+  var restProfiles = profileCache.filter(function(p){ return !p.favorite; });
+  profileCache = favs.concat(restProfiles);
+
+  // Re-render favs grid in new order without full reload
+  var grid = document.getElementById('fav-grid');
+  // Rebuild pendingCredits cache for re-render
+  var pendingCredits = [];
+  try {
+    fetch(API+'/payments').then(function(r){return r.json();}).then(function(all){
+      pendingCredits = all.filter(function(r){return r.isCredit&&r.creditStatus==='pending';});
+      grid.innerHTML = favs.map(function(p){ return renderProfileCard(p, pendingCredits); }).join('');
+    });
+  } catch(ex) {
+    grid.innerHTML = favs.map(function(p){ return renderProfileCard(p, []); }).join('');
+  }
+  _nxDragPid = null;
+}
+
+// Apply saved fav order to profileCache before rendering
+function nxApplyFavOrder(profiles) {
+  var order = [];
+  try { order = JSON.parse(localStorage.getItem('nx_fav_order')||'[]'); } catch(e){}
+  var favs = profiles.filter(function(p){ return !!p.favorite; });
+  var rest = profiles.filter(function(p){ return !p.favorite; });
+  if(!order.length) return favs.concat(rest); // no saved order yet
+  // Split into: known order + new favs not yet in saved order
+  var known = [], unknown = [];
+  favs.forEach(function(p){
+    if(order.indexOf(p.id) >= 0) known.push(p);
+    else unknown.push(p);
+  });
+  known.sort(function(a,b){ return order.indexOf(a.id) - order.indexOf(b.id); });
+  return known.concat(unknown).concat(rest);
+}
+
 async function toggleFav(pid) {
   var p = profileCache.find(function(x){return x.id===pid;});
   if(!p) return;
   p.favorite = !p.favorite;
   try {
-    await fetch(API+'/profiles/'+pid, {
-      method:'PATCH',
+    await fetch(API+'/profiles/'+encodeURIComponent(pid), {
+      method:'PUT',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({favorite: p.favorite})
+      body: JSON.stringify(p)
     });
   } catch(e) { console.log('fav save error',e); }
   loadProfiles();
@@ -5279,6 +5678,7 @@ async function loadProfiles() {
   if(!grid) return;
   var q = (document.getElementById('cs-search').value||'').toLowerCase().trim();
   grid.innerHTML = '<div class="hempty" style="grid-column:1/-1;">⏳ Loading...</div>';
+  document.getElementById('fav-section').style.display = 'none';
   try {
     var r = await fetch(API+'/profiles');
     profileCache = await r.json();
@@ -5293,9 +5693,10 @@ async function loadProfiles() {
 
   document.getElementById('cs-cnt').textContent = profileCache.length;
   var _cc4=document.getElementById('ccount');if(_cc4)_cc4.textContent=profileCache.length;
-  // Sort: favorites first, then by lastDate
+  // Sort normals by most recent first only — favs order is handled by nxApplyFavOrder
   profileCache.sort(function(a,b){
     if(!!b.favorite !== !!a.favorite) return b.favorite ? 1 : -1;
+    if(!!b.favorite && !!a.favorite) return 0; // don't touch fav order here
     return (b.lastDate||'') > (a.lastDate||'') ? 1 : -1;
   });
   var filtered = q ? profileCache.filter(function(p) {
@@ -5308,11 +5709,45 @@ async function loadProfiles() {
                     (a.label||'').toLowerCase().includes(q);
            });
   }) : profileCache;
+  // Apply saved drag order to favourites
+  filtered = nxApplyFavOrder(filtered);
   if(!filtered.length) {
-    grid.innerHTML='<div class="hempty" style="grid-column:1/-1;">👥 No customers found.<br><br><button class="set-btn orange" onclick="openAddProfile()">➕ Add Customer</button></div>';
+    document.getElementById('fav-section').style.display = 'none';
+    document.getElementById('all-section-header').style.display = 'none';
+    document.getElementById('cust-grid').innerHTML='<div class="hempty" style="grid-column:1/-1;">👥 No customers found.<br><br><button class="set-btn orange" onclick="openAddProfile()">➕ Add Customer</button></div>';
     return;
   }
-  grid.innerHTML = filtered.map(function(p) { return renderProfileCard(p, pendingCredits); }).join('');
+
+  var favs = filtered.filter(function(p){ return !!p.favorite; });
+  var normals = filtered.filter(function(p){ return !p.favorite; });
+
+  // Favourites section
+  var favSection = document.getElementById('fav-section');
+  var favGrid = document.getElementById('fav-grid');
+  if(favs.length) {
+    favSection.style.display = 'block';
+    document.getElementById('fav-count').textContent = favs.length;
+    favGrid.innerHTML = favs.map(function(p){ return renderProfileCard(p, pendingCredits); }).join('');
+  } else {
+    favSection.style.display = 'none';
+  }
+
+  // All customers section
+  var allHeader = document.getElementById('all-section-header');
+  var allGrid = document.getElementById('cust-grid');
+  if(normals.length) {
+    // Show header divider only when favourites section is also visible
+    if(favs.length) {
+      allHeader.style.display = 'flex';
+      document.getElementById('all-count').textContent = normals.length;
+    } else {
+      allHeader.style.display = 'none';
+    }
+    allGrid.innerHTML = normals.map(function(p){ return renderProfileCard(p, pendingCredits); }).join('');
+  } else {
+    allHeader.style.display = 'none';
+    allGrid.innerHTML = '';
+  }
 }
 
 function renderProfileCard(p, pendingCredits) {
@@ -5352,7 +5787,7 @@ function renderProfileCard(p, pendingCredits) {
     : '';
 
   var isFav = !!p.favorite;
-  return '<div class="cp-card' + (hasCredit?' has-credit':'') + (isFav?' fav-card':'') + '" style="position:relative;">' +
+  return '<div class="cp-card' + (hasCredit?' has-credit':'') + (isFav?' fav-card':'') + '" style="position:relative;"' + (isFav?' draggable="true" data-pid="'+pid+'" ondragstart="nxDragStart(event)" ondragover="nxDragOver(event)" ondragleave="nxDragLeave(event)" ondrop="nxDrop(event)" ondragend="this.classList.remove(\'dragging\')"':'') + '>' +
     (isFav ? '<div class="cp-fav-stripe"></div>' : '') +
     (hasCredit ? '<div class="cp-credit-stripe"></div>' : '') +
     '<div class="cp-header">' +
@@ -5362,6 +5797,7 @@ function renderProfileCard(p, pendingCredits) {
         '<div class="cp-phone">'+(p.phone?'📞 '+p.phone:'No phone')+(p.notes?' · '+p.notes:'')+'</div>' +
       '</div>' +
       '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">' +
+        (isFav ? '<span class="cp-drag-handle" title="Drag to reorder">⠿</span>' : '') +
         '<button class="cp-fav-btn'+(isFav?' on':'')+'" onclick="toggleFav(\''+pid+'\')" title="'+(isFav?'Remove favorite':'Add to favorites')+'">'+(isFav?'⭐':'☆')+'</button>' +
         '<div style="font-size:10px;color:var(--muted);text-align:right;">'+(accs.length)+' acct'+(accs.length!==1?'s':'')+'<br>'+(p.lastDate||'')+'</div>' +
       '</div>' +
@@ -5472,6 +5908,85 @@ function addAccEntry(a) {
     '<input type="text" placeholder="e.g. CEB, NWSDB" value="'+(a.operator||'')+'" style="'+S+'"></div>' +
     '<button style="padding:6px 10px;background:none;border:1px solid var(--bdr);color:var(--muted);border-radius:6px;cursor:pointer;height:36px;margin-top:20px;flex-shrink:0;" onclick="this.parentElement.remove()">✕</button>';
   document.getElementById('acc-entries').appendChild(div);
+}
+
+// Auto-create or update customer profiles when a bill is saved
+async function nxAutoUpsertProfiles(billCart) {
+  try {
+    // Group bills by customer name+phone
+    var custMap = {};
+    billCart.forEach(function(b) {
+      var name = (b.cust_name || b.service_name || '').trim();
+      var phone = (b.cust_phone || '').trim();
+      if (!name) return; // skip bills with no customer name
+      var key = name.toLowerCase() + '|' + phone.toLowerCase();
+      if (!custMap[key]) custMap[key] = { name: name, phone: phone, bills: [] };
+      custMap[key].bills.push(b);
+    });
+    if (!Object.keys(custMap).length) return;
+
+    // Load existing profiles
+    var r = await fetch(API + '/profiles');
+    var profiles = r.ok ? await r.json() : [];
+
+    for (var key in custMap) {
+      var c = custMap[key];
+      // Find existing profile by phone (primary) or name
+      var existing = null;
+      if (c.phone) existing = profiles.find(function(p){ return p.phone && p.phone.replace(/\s/g,'') === c.phone.replace(/\s/g,''); });
+      if (!existing) existing = profiles.find(function(p){ return p.name && p.name.toLowerCase() === c.name.toLowerCase(); });
+
+      var accounts = existing ? (existing.accounts || []) : [];
+
+      // Merge in new account entries from this bill
+      c.bills.forEach(function(b) {
+        var acctNo = (b.account_no || '').trim();
+        var operator = (b.operator || b.cfg.company || '').trim();
+        if (!acctNo && !operator) return;
+        // Check if this account already exists
+        var already = accounts.find(function(a) {
+          return a.type === b.type &&
+            (acctNo ? a.account === acctNo : a.operator === operator);
+        });
+        if (!already) {
+          var tm = BILL_TYPES_MAP[b.type] || { icon: b.cfg.icon, label: b.cfg.label };
+          accounts.push({
+            type: b.type, icon: tm.icon, label: tm.label,
+            account: acctNo, operator: operator,
+            package: b.package || '', lastDate: nowDate()
+          });
+        } else {
+          // Update lastDate on existing account
+          already.lastDate = nowDate();
+          if (operator && !already.operator) already.operator = operator;
+        }
+      });
+
+      if (existing) {
+        // Update existing profile
+        existing.accounts = accounts;
+        existing.lastDate = nowDate();
+        if (!existing.phone && c.phone) existing.phone = c.phone;
+        await fetch(API + '/profiles/' + encodeURIComponent(existing.id), {
+          method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(existing)
+        });
+      } else {
+        // Create new profile
+        var newProfile = {
+          id: 'p_' + Date.now() + '_' + Math.floor(Math.random()*1000),
+          name: c.name, phone: c.phone, notes: '', accounts: accounts, lastDate: nowDate()
+        };
+        await fetch(API + '/profiles', {
+          method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(newProfile)
+        });
+        profiles.push(newProfile); // avoid duplicate creation in same save
+      }
+    }
+    // Refresh customer count
+    try { var _r=await fetch(API+'/profiles'); var _d=await _r.json(); var _cc=document.getElementById('ccount'); if(_cc)_cc.textContent=_d.length; } catch(e){}
+  } catch(e) {
+    console.warn('[NEXTIOM] Auto-profile upsert failed:', e.message);
+  }
 }
 
 async function saveProfile() {
@@ -5780,7 +6295,7 @@ async function saveEdit() {
   });
   // Recalculate totals
   r.billsTotal  = r.bills.reduce(function(s,b){return s+b.amount;},0);
-  r.svcTotal    = r.bills.reduce(function(s,b){return s+b.svc;},0);
+  r.svcTotal    = r.bills.reduce(function(s,b){return s+(b.svc_waived?0:b.svc);},0);
   r.grandTotal  = r.billsTotal + r.svcTotal;
   r.balance     = r.cashReceived - r.grandTotal;
 
@@ -5845,11 +6360,11 @@ function updateSessionLive() {
   var cartBreakdown = {};
   cart.forEach(function(b) {
     cartBills++;
-    cartTotal += b.amount + b.svc_charge;
+    cartTotal += b.amount + (b.svc_waived?0:b.svc_charge);
     var key = b.cfg.icon + ' ' + b.cfg.label;
     if(!cartBreakdown[key]) cartBreakdown[key] = {count:0, total:0};
     cartBreakdown[key].count++;
-    cartBreakdown[key].total += b.amount + b.svc_charge;
+    cartBreakdown[key].total += b.amount + (b.svc_waived?0:b.svc_charge);
   });
   // Merge with saved session
   var totalBills = session.bills + cartBills;
@@ -5942,7 +6457,7 @@ function resetSession() {
 
 // ── SESSION CASH CALCULATOR ──
 function updateSessionCalcTotal() {
-  var cartTotal = cart.reduce(function(s,b){return s+b.amount+b.svc_charge;},0);
+  var cartTotal = cart.reduce(function(s,b){return s+b.amount+(b.svc_waived?0:b.svc_charge);},0);
   var grandTotal = session.total + cartTotal;
   var el = document.getElementById('sc-total');
   if(el) el.textContent = 'LKR ' + grandTotal.toFixed(2);
@@ -5950,7 +6465,7 @@ function updateSessionCalcTotal() {
 }
 
 function calcSessionChange() {
-  var cartTotal = cart.reduce(function(s,b){return s+b.amount+b.svc_charge;},0);
+  var cartTotal = cart.reduce(function(s,b){return s+b.amount+(b.svc_waived?0:b.svc_charge);},0);
   var grandTotal = session.total + cartTotal;
   var cash = parseFloat(document.getElementById('sc-cash').value) || 0;
   var balEl  = document.getElementById('sc-bal');
@@ -6149,33 +6664,41 @@ async function loadCashDrawer() {
   document.getElementById('cd-collected').textContent='LKR '+totalAmt.toFixed(2);
   document.getElementById('cd-svc').textContent='LKR '+totalSvc.toFixed(2);
   document.getElementById('cd-count').textContent=totalBills;
-  // Load opening balance from localStorage
-  var saved=null;
-  try{var s=localStorage.getItem('nx_cash_'+date);if(s)saved=JSON.parse(s);}catch(e){}
+  // Load saved cash record for this date from server
+  var allRecords=[];
+  try{var cr=await fetch(API+'/cash-records');allRecords=await cr.json();}catch(e){}
+  var saved=allRecords.find(function(r){return r.date===date;})||null;
   var opening = saved ? saved.opening : 0;
   document.getElementById('cd-open').value = opening||'';
-  document.getElementById('cd-actual').value = saved ? saved.actual : '';
+  document.getElementById('cd-actual').value = saved ? (saved.actual||'') : '';
   var expected = opening + totalAmt;
   document.getElementById('cd-expected').textContent='LKR '+expected.toFixed(2);
   calcDrawer();
-  // Show history of saved cash records
+  // Show history of all saved cash records
   var histEl=document.getElementById('cd-history');
-  var keys=[];
-  try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith('nx_cash_'))keys.push(k);}}catch(e){}
-  keys.sort().reverse();
-  if(!keys.length){histEl.innerHTML='<div style="color:var(--muted);font-size:12px;">No cash records saved yet.</div>';return;}
-  var hhtml='<table class="rpt-table"><thead><tr><th>Date</th><th>Opening</th><th>Bills Collected</th><th>Expected</th><th>Actual</th><th>Difference</th></tr></thead><tbody>';
-  keys.forEach(function(k){
-    try{
-      var d=JSON.parse(localStorage.getItem(k));
-      var dt=k.replace('nx_cash_','');
-      var diff=d.actual-(d.opening+d.collected);
-      var diffColor=diff>=0?'#06d6a0':'var(--red)';
-      hhtml+='<tr><td>'+dt+'</td><td>LKR '+d.opening.toFixed(2)+'</td><td>LKR '+d.collected.toFixed(2)+'</td><td>LKR '+(d.opening+d.collected).toFixed(2)+'</td><td>LKR '+d.actual.toFixed(2)+'</td><td style="font-weight:700;color:'+diffColor+'">'+(diff>=0?'+':'')+diff.toFixed(2)+'</td></tr>';
-    }catch(e){}
+  if(!allRecords.length){histEl.innerHTML='<div style="color:var(--muted);font-size:12px;">No cash records saved yet.</div>';return;}
+  var hhtml='<table class="rpt-table"><thead><tr><th>Date</th><th>Opening</th><th>Bills Collected</th><th>Expected</th><th>Actual</th><th>Difference</th><th></th></tr></thead><tbody>';
+  allRecords.forEach(function(d){
+    var diff=d.actual-(d.opening+d.collected);
+    var diffColor=diff>=0?'#06d6a0':'var(--red)';
+    hhtml+='<tr>'
+      +'<td>'+d.date+'</td>'
+      +'<td>LKR '+parseFloat(d.opening||0).toFixed(2)+'</td>'
+      +'<td>LKR '+parseFloat(d.collected||0).toFixed(2)+'</td>'
+      +'<td>LKR '+parseFloat(d.expected||0).toFixed(2)+'</td>'
+      +'<td>LKR '+parseFloat(d.actual||0).toFixed(2)+'</td>'
+      +'<td style="font-weight:700;color:'+diffColor+'">'+(diff>=0?'+':'')+diff.toFixed(2)+'</td>'
+      +'<td><button onclick="delCashRecord(\''+d.date+'\')" style="background:none;border:1px solid #3a0a0a;color:#e63946;border-radius:4px;padding:2px 7px;font-size:9px;cursor:pointer;">Del</button></td>'
+      +'</tr>';
   });
   hhtml+='</tbody></table>';
   histEl.innerHTML=hhtml;
+}
+
+async function delCashRecord(date) {
+  try{await fetch(API+'/cash-records/'+encodeURIComponent(date),{method:'DELETE'});}catch(e){}
+  nxToast('Cash record deleted for '+date);
+  loadCashDrawer();
 }
 
 function calcDrawer() {
@@ -6204,14 +6727,20 @@ async function saveCashDrawer() {
   var collectedEl=document.getElementById('cd-collected');
   var collected=parseFloat((collectedEl.textContent||'0').replace('LKR ',''))||0;
   var record={date:date,opening:opening,collected:collected,expected:opening+collected,actual:actual,diff:actual-(opening+collected),savedAt:new Date().toISOString()};
-  try{localStorage.setItem('nx_cash_'+date,JSON.stringify(record));}catch(e){}
-  nxToast('✅ Cash record saved for '+date+'!');
+  try{
+    await fetch(API+'/cash-records',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(record)});
+    nxToast('✅ Cash record saved for '+date+'!');
+  }catch(e){nxToast('❌ Save failed: '+e.message,true);}
   loadCashDrawer();
 }
 
 // ══════════════════════════════════════════
 // ── CUSTOMER HISTORY ──
 // ══════════════════════════════════════════
+function showCustHistoryByName(name) {
+  showCustHistory(name, '');
+}
+
 async function showCustHistory(custName, custAccount) {
   var modal=document.getElementById('ch-modal');
   var title=document.getElementById('ch-title');
@@ -6272,15 +6801,15 @@ var _collectingId = null;
 
 async function doCredit() {
   if (!cart.length) { nxToast('⚠️ Add at least one bill first!', true); return; }
-  var gT = cart.reduce(function(s,b){ return s + b.amount + b.svc_charge; }, 0);
+  var gT = cart.reduce(function(s,b){ return s + b.amount + (b.svc_waived?0:b.svc_charge); }, 0);
   nxConfirm('💳 Save as Credit', 'Save as CREDIT (not paid yet)?\nAmount owed: LKR ' + gT.toFixed(2), async function(){
     await _doCreditConfirmed();
   }, false);
 }
 async function _doCreditConfirmed() {
-  var gT = cart.reduce(function(s,b){ return s + b.amount + b.svc_charge; }, 0);
+  var gT = cart.reduce(function(s,b){ return s + b.amount + (b.svc_waived?0:b.svc_charge); }, 0);
   var bT = cart.reduce(function(s,b){ return s + b.amount; }, 0);
-  var sT = cart.reduce(function(s,b){ return s + b.svc_charge; }, 0);
+  var sT = cart.reduce(function(s,b){ return s + (b.svc_waived?0:b.svc_charge); }, 0);
   var rec = {
     id: 'CRD' + Date.now().toString().slice(-8),
     datetime: new Date().toISOString(),
