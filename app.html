@@ -1151,7 +1151,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
   <div class="rpt-top" style="display:flex;align-items:center;justify-content:space-between;">
     <h2>⚙️ SETTINGS</h2>
     <div style="display:flex;align-items:center;gap:8px;">
-      <span id="nx-ver-badge" style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:#555;">v2.0</span>
+      <span id="nx-ver-badge" style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:#555;">v2.1</span>
       <button id="nx-update-btn" onclick="nxRemoteUpdateCheck()" style="background:#1a0d00;border:1.5px solid #F5A623;color:#F5A623;padding:7px 18px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;display:flex;align-items:center;gap:6px;" onmouseover="this.style.background='#F5A623';this.style.color='#111'" onmouseout="this.style.background='#1a0d00';this.style.color='#F5A623'">🔄 Check for Update</button>
     </div>
   </div>
@@ -1629,7 +1629,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 <script>
 // ══════════════════════════════════════════════════════
 // NEXTIOM BILL POS — LICENSE PROTECTION SYSTEM v2.0
-var NX_APP_VERSION = '2.1';
+var NX_APP_VERSION = '2.3';
 // © 2026 Nextiom (Pvt) Ltd | lahirutharaka.com | 070 203 2323
 // Unauthorized modification or redistribution prohibited
 // ══════════════════════════════════════════════════════
@@ -5003,6 +5003,8 @@ async function nxDoAppUpdate(input) {
 }
 
 async function loadSettingsPage(){
+  // Update version badge dynamically
+  try { document.getElementById('nx-ver-badge').textContent = 'v' + NX_APP_VERSION; } catch(e) {}
   // Fill shop info from bill printer fields
   var sn = document.getElementById('shop_name').value||'NEXTIOM';
   var st = document.getElementById('shop_tel').value||'070 203 2323';
