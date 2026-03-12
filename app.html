@@ -4853,7 +4853,15 @@ function nxAskUpdateFile() {
 
 async function nxLoadRollbackList() {
   var panel = document.getElementById('nx-rollback-panel');
+  var btn = event.target;
+  // Toggle close if already open
+  if (panel.style.display === 'block') {
+    panel.style.display = 'none';
+    btn.textContent = '🔍 View Rollback History';
+    return;
+  }
   panel.style.display = 'block';
+  btn.textContent = '🔼 Hide Rollback History';
   document.getElementById('nx-rollback-apphtml').innerHTML = '<span style="color:#555;font-size:10px;">Loading...</span>';
   document.getElementById('nx-rollback-mainjs').innerHTML  = '<span style="color:#555;font-size:10px;">Loading...</span>';
   try {
