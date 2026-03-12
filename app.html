@@ -1441,7 +1441,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
           <div style="background:#0a1200;border:1.5px solid #e63946;border-radius:10px;padding:16px;">
             <div style="font-size:11px;color:#e63946;font-weight:700;letter-spacing:1px;margin-bottom:6px;">⏪ ROLLBACK</div>
             <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.6;">Restore a previous version if something went wrong after an update. Last 5 versions are kept automatically.</div>
-            <button onclick="nxLoadRollbackList()" style="background:#1a0505;border:1.5px solid #e63946;color:#e63946;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;margin-bottom:10px;" onmouseover="this.style.background='#e63946';this.style.color='#fff'" onmouseout="this.style.background='#1a0505';this.style.color='#e63946'">🔍 View Rollback History</button>
+            <button id="nx-rollback-btn" onclick="nxLoadRollbackList()" style="background:#1a0505;border:1.5px solid #e63946;color:#e63946;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;margin-bottom:10px;" onmouseover="this.style.background='#e63946';this.style.color='#fff'" onmouseout="this.style.background='#1a0505';this.style.color='#e63946'">🔍 View Rollback History</button>
             <div id="nx-rollback-panel" style="display:none;">
               <div style="font-size:10px;color:#F5A623;font-weight:700;letter-spacing:1px;margin-bottom:6px;">app.html versions</div>
               <div id="nx-rollback-apphtml" style="margin-bottom:12px;"></div>
@@ -4853,8 +4853,7 @@ function nxAskUpdateFile() {
 
 async function nxLoadRollbackList() {
   var panel = document.getElementById('nx-rollback-panel');
-  var btn = event.target;
-  // Toggle close if already open
+  var btn = document.getElementById('nx-rollback-btn');
   if (panel.style.display === 'block') {
     panel.style.display = 'none';
     btn.textContent = '🔍 View Rollback History';
