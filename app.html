@@ -436,13 +436,13 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .cust-del{padding:7px 10px;background:none;border:1.5px solid var(--bdr);color:var(--muted);border-radius:6px;font-size:11px;cursor:pointer;}
 .cust-del:hover{color:var(--red);border-color:var(--red);}
 /* REPORT PAGE */
-#pg-report,#pg-cash,#pg-settings{display:none;flex-direction:column;flex:1;overflow:hidden;}
+#pg-settings{display:none;flex-direction:column;flex:1;overflow:hidden;width:100%;min-width:0;}
 /* SETTINGS PAGE */
-.set-body{flex:1;overflow-y:auto;padding:28px;background:var(--bg);}
-.set-grid{display:grid;grid-template-columns:repeat(3,minmax(280px,1fr));gap:20px;}
+.set-body{flex:1;overflow-y:auto;padding:28px;background:var(--bg);width:100%;box-sizing:border-box;}
+.set-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;width:100%;}
 .set-card{background:var(--panel);border:1px solid var(--bdr);border-radius:14px;padding:22px;}
 .set-card h3{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--or);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
-.set-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #2a2a26;}
+.set-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #2a2a26;flex-wrap:nowrap;gap:10px;}
 .set-row:last-child{border-bottom:none;}
 .set-row-label{font-size:12px;color:var(--text);}
 .set-row-sub{font-size:10px;color:var(--muted);margin-top:2px;}
@@ -463,7 +463,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .color-pill-swatch{width:18px;height:18px;border-radius:50%;flex-shrink:0;border:2px solid rgba(255,255,255,0.2);cursor:pointer;padding:0;}
 .color-pill-label{font-size:11px;font-weight:700;letter-spacing:0.5px;white-space:nowrap;}
 /* REPORT PAGE */
-#pg-report,#pg-cash{display:none;flex-direction:column;flex:1;overflow:hidden;}
+#pg-report,#pg-cash{display:none;flex-direction:column;flex:1;overflow:hidden;width:100%;min-width:0;}
 .rpt-top{background:var(--panel);border-bottom:2px solid var(--bdr);padding:14px 24px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
 .rpt-top h2{font-size:14px;font-weight:700;color:var(--or);letter-spacing:2px;white-space:nowrap;}
 .rpt-body{flex:1;overflow-y:auto;padding:24px;background:var(--bg);}
@@ -641,6 +641,9 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .collect-confirm{flex:1;padding:11px;background:#4a90d9;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;}
 .collect-confirm:hover{background:#3a7bc8;}
 .collect-cancel{padding:11px 18px;background:transparent;color:var(--muted);border:1px solid var(--bdr);border-radius:8px;font-size:12px;cursor:pointer;}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+input[type=number]{-moz-appearance:textfield;}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -891,9 +894,9 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 
 <div class="nav">
   <button class="nb on" id="nb-bill" onclick="goPage('bill')">🧾 BILL PRINTER</button>
+  <button class="nb" id="nb-cust" onclick="goPage('cust')">👥 CUSTOMERS (<span id="ccount">0</span>)</button><button class="nb-pop" onclick="nxPopOut('cust')" title="Open in new window">⧉</button>
   <button class="nb" id="nb-credit" onclick="goPage('credit')" style="color:#4a90d9;">&#x1F4B3; CREDITS (<span id="creditcount">0</span>)</button>
   <button class="nb" id="nb-hist" onclick="goPage('hist')">📋 PAYMENT HISTORY (<span id="hcount">0</span>)</button><button class="nb-pop" onclick="nxPopOut('hist')" title="Open in new window">⧉</button>
-  <button class="nb" id="nb-cust" onclick="goPage('cust')">👥 CUSTOMERS (<span id="ccount">0</span>)</button><button class="nb-pop" onclick="nxPopOut('cust')" title="Open in new window">⧉</button>
   <button class="nb" id="nb-report" onclick="goPage('report')">📊 DAILY REPORT</button><button class="nb-pop" onclick="nxPopOut('report')" title="Open in new window">⧉</button>
   <button class="nb" id="nb-cash" onclick="goPage('cash')">💵 CASH DRAWER</button><button class="nb-pop" onclick="nxPopOut('cash')" title="Open in new window">⧉</button>
   <button class="nb" id="nb-settings" onclick="goPage('settings')">⚙️ SETTINGS</button>
@@ -1158,44 +1161,6 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
   <div class="set-body">
     <div class="set-grid">
 
-      <!-- DATA BACKUP -->
-      <div class="set-card">
-        <h3>💾 Data Backup & Restore</h3>
-        <div class="set-row">
-          <div><div class="set-row-label">Backup All Data</div><div class="set-row-sub">Save payments & customers as JSON file</div></div>
-          <button class="set-btn blue" onclick="doBackup()">💾 Backup</button>
-        </div>
-        <div class="set-row">
-          <div><div class="set-row-label">Restore from Backup</div><div class="set-row-sub">Import a previous backup JSON file</div></div>
-          <button class="set-btn green" onclick="nxConfirm('📂 Restore Backup','Enter admin password to restore from a backup file.',function(){document.getElementById('import-file').click();},true)">📂 Restore</button>
-        </div>
-        <div class="set-row">
-          <div><div class="set-row-label">Export to CSV</div><div class="set-row-sub">Download all payments as spreadsheet</div></div>
-          <button class="set-btn orange" onclick="doExport()">⬇️ Export CSV</button>
-        </div>
-      </div>
-
-      <!-- CLEAR DATA -->
-      <div class="set-card">
-        <h3>🗑️ Clear Data</h3>
-        <div class="set-row">
-          <div><div class="set-row-label">Clear by Date Range</div><div class="set-row-sub">Move records in date range to Bin</div></div>
-          <button class="set-btn red" onclick="nxConfirm('🗓️ Clear by Date','Admin password required to clear records.',function(){openClearByDate();},true)">🗓️ Clear by Date</button>
-        </div>
-        <div class="set-row">
-          <div><div class="set-row-label">Clear All Records</div><div class="set-row-sub">Move ALL payment history to Bin</div></div>
-          <button class="set-btn red" onclick="doClearAll()">🗑️ Clear All</button>
-        </div>
-        <div class="set-row">
-          <div><div class="set-row-label">Clear All Customers</div><div class="set-row-sub">Move all customer data to Bin</div></div>
-          <button class="set-btn red" onclick="doClearCustomers()">👥 Clear Customers</button>
-        </div>
-        <div class="set-row" style="border-bottom:none;padding-top:14px;">
-          <div><div class="set-row-label" style="color:#f5a623;">🗑️ Deleted Records Bin</div><div class="set-row-sub">View, restore or permanently delete</div></div>
-          <button class="set-btn orange" onclick="openDeletedBin()" style="position:relative;">🗑️ Open Bin <span id="bin-count-badge" style="display:none;position:absolute;top:-6px;right:-6px;background:#e63946;color:#fff;font-size:9px;font-weight:800;border-radius:10px;padding:2px 5px;min-width:16px;text-align:center;"></span></button>
-        </div>
-      </div>
-
       <!-- SHOP INFO -->
       <div class="set-card">
         <h3>🏪 Shop Information</h3>
@@ -1232,9 +1197,9 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
         </div>
       </div>
 
-      <!-- BILL TYPE MANAGEMENT — full width -->
-      <div class="set-card" id="bm-card" style="grid-column:1/-1;">
-        <h3>🗂️ Bill Type Management</h3>
+      <!-- BILL TYPE MANAGEMENT + APP THEME equal boxes -->
+      <div style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div class="set-card" id="bm-card">
         <!-- Tab bar -->
         <div style="display:flex;gap:0;margin-bottom:18px;border-bottom:2px solid #2a2a26;">
           <button id="bm-tab-list"   onclick="bmShowTab('list')"   style="padding:9px 20px;background:none;border:none;border-bottom:2px solid var(--or);color:var(--or);font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;margin-bottom:-2px;font-family:'IBM Plex Sans',sans-serif;">📋 BILL TYPES</button>
@@ -1244,13 +1209,14 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 
         <!-- ── TAB: Bill Types List ── -->
         <div id="bm-tab-list-content">
-          <div id="bm-list" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;"></div>
+          <div id="bm-list" style="display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:16px;"></div>
           <button onclick="bmOpenAdd()" style="padding:10px 22px;background:#1a1200;border:1.5px solid var(--or);color:var(--or);border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;" onmouseover="this.style.background='var(--or)';this.style.color='#111'" onmouseout="this.style.background='#1a1200';this.style.color='var(--or)'">➕ Add New Bill Type</button>
         </div>
 
         <!-- ── TAB: Colors ── -->
         <div id="bm-tab-colors-content" style="display:none;">
           <div id="color-pickers-card">
+            <div style="font-size:10px;color:var(--or);font-weight:800;letter-spacing:1.5px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #2a2a26;">🟡 BILL TYPE COLORS</div>
             <div id="bm-color-rows"></div>
             <div style="display:flex;align-items:center;gap:10px;padding-top:12px;border-top:1px solid #2a2a26;margin-top:4px;">
               <span id="color-save-msg" style="font-size:11px;color:#06d6a0;flex:1;"></span>
@@ -1265,13 +1231,99 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
           <div style="margin-bottom:12px;padding:10px 14px;background:#1a0a00;border:1px solid #3a1a00;border-radius:8px;font-size:11px;color:#c8880a;">
             ℹ️ Deleted bill types are kept here. You can restore them at any time. They will not appear on the billing page while in trash.
           </div>
-          <div id="bm-trash-list" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;"></div>
+          <div id="bm-trash-list" style="display:grid;grid-template-columns:1fr;gap:8px;"></div>
           <div id="bm-trash-empty" style="display:none;padding:30px;text-align:center;color:#444;font-size:13px;">🗑️ Trash is empty</div>
         </div>
       </div>
 
+      <!-- THEME / SYSTEM COLOR — separate card -->
+      <div class="set-card" >
+        <h3>🖌️ App Theme</h3>
+        <div style="font-size:11px;color:#666;margin-bottom:20px;">Customize the main accent color — drag the wheel or pick a preset.</div>
+        <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;">
+          <!-- Color Wheel -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+            <canvas id="nx-color-wheel" width="160" height="160" style="border-radius:50%;cursor:crosshair;display:block;"></canvas>
+            <div style="width:160px;">
+              <div style="font-size:10px;color:#666;font-weight:700;letter-spacing:1px;margin-bottom:5px;">BRIGHTNESS</div>
+              <input type="range" id="nx-brightness-slider" min="0" max="100" value="85" oninput="nxWheelBrightnessChange(this.value)" style="width:100%;accent-color:var(--or);">
+            </div>
+          </div>
+          <!-- Right: preview + hex + presets + save -->
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div id="nx-sys-color-preview" style="width:56px;height:56px;border-radius:10px;background:#F5A623;border:2px solid #333;flex-shrink:0;"></div>
+              <div>
+                <div style="font-size:10px;color:#666;font-weight:700;letter-spacing:1px;margin-bottom:5px;">HEX CODE</div>
+                <input type="text" id="nx-sys-color-hex" value="#F5A623" maxlength="7" oninput="nxSyncSysColorHex(this.value)" placeholder="#F5A623" style="width:110px;background:#0d0d0b;border:1.5px solid #333;border-radius:6px;padding:7px 10px;font-size:13px;color:#fff;font-family:'IBM Plex Mono',monospace;box-sizing:border-box;">
+                <input type="color" id="nx-sys-color-inp" value="#F5A623" oninput="nxPreviewSysColor(this.value)" style="display:none;">
+              </div>
+            </div>
+            <div>
+              <div style="font-size:10px;color:#666;font-weight:700;letter-spacing:1px;margin-bottom:8px;">PRESETS</div>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;" id="nx-sys-presets">
+                <div onclick="nxSetSysPreset('#F5A623')" title="Orange"   style="width:34px;height:34px;border-radius:7px;background:#F5A623;cursor:pointer;border:2px solid #fff;"></div>
+                <div onclick="nxSetSysPreset('#e63946')" title="Red"      style="width:34px;height:34px;border-radius:7px;background:#e63946;cursor:pointer;border:2px solid transparent;"></div>
+                <div onclick="nxSetSysPreset('#06d6a0')" title="Green"    style="width:34px;height:34px;border-radius:7px;background:#06d6a0;cursor:pointer;border:2px solid transparent;"></div>
+                <div onclick="nxSetSysPreset('#4a90d9')" title="Blue"     style="width:34px;height:34px;border-radius:7px;background:#4a90d9;cursor:pointer;border:2px solid transparent;"></div>
+                <div onclick="nxSetSysPreset('#a855f7')" title="Purple"   style="width:34px;height:34px;border-radius:7px;background:#a855f7;cursor:pointer;border:2px solid transparent;"></div>
+                <div onclick="nxSetSysPreset('#f72585')" title="Pink"     style="width:34px;height:34px;border-radius:7px;background:#f72585;cursor:pointer;border:2px solid transparent;"></div>
+                <div onclick="nxSetSysPreset('#3a86ff')" title="Sky Blue" style="width:34px;height:34px;border-radius:7px;background:#3a86ff;cursor:pointer;border:2px solid transparent;"></div>
+                <div onclick="nxSetSysPreset('#ffbe0b')" title="Yellow"   style="width:34px;height:34px;border-radius:7px;background:#ffbe0b;cursor:pointer;border:2px solid transparent;"></div>
+                <div onclick="nxSetSysPreset('#ffffff')" title="White"    style="width:34px;height:34px;border-radius:7px;background:#ffffff;cursor:pointer;border:2px solid transparent;"></div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding-top:10px;border-top:1px solid #2a2a26;">
+              <span id="sys-color-save-msg" style="font-size:11px;color:#06d6a0;"></span>
+              <button class="set-btn" style="border-color:var(--bdr);color:var(--muted);" onclick="nxResetSysColor()">↺ Reset</button>
+              <button class="set-btn orange" onclick="nxSaveSysColor()">💾 Save Theme</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div><!-- end equal-boxes wrapper -->
+
+      <!-- DATA BACKUP + CLEAR DATA + PASSWORD — one row -->
+      <div class="set-card">
+        <h3>💾 Data Backup &amp; Restore</h3>
+        <div class="set-row">
+          <div><div class="set-row-label">Backup All Data</div><div class="set-row-sub">Save payments &amp; customers as JSON file</div></div>
+          <button class="set-btn blue" onclick="doBackup()" style="width:120px;">💾 Backup</button>
+        </div>
+        <div class="set-row">
+          <div><div class="set-row-label">Restore from Backup</div><div class="set-row-sub">Import a previous backup JSON file</div></div>
+          <button class="set-btn green" onclick="nxConfirm('📂 Restore Backup','Enter admin password to restore from a backup file.',function(){document.getElementById('import-file').click();},true)" style="width:120px;">📂 Restore</button>
+        </div>
+        <div class="set-row">
+          <div><div class="set-row-label">Export to CSV</div><div class="set-row-sub">Download all payments as spreadsheet</div></div>
+          <button class="set-btn orange" onclick="doExport()" style="width:120px;">⬇️ Export CSV</button>
+        </div>
+      </div>
+
+      <!-- CLEAR DATA -->
+      <div class="set-card">
+        <h3>🗑️ Clear Data</h3>
+        <div class="set-row">
+          <div><div class="set-row-label">Clear by Date Range</div><div class="set-row-sub">Move records in date range to Bin</div></div>
+          <button class="set-btn red" onclick="nxConfirm('🗓️ Clear by Date','Admin password required to clear records.',function(){openClearByDate();},true)" style="width:120px;">🗓️ By Date</button>
+        </div>
+        <div class="set-row">
+          <div><div class="set-row-label">Clear All Records</div><div class="set-row-sub">Move ALL payment history to Bin</div></div>
+          <button class="set-btn red" onclick="doClearAll()" style="width:120px;">🗑️ Clear All</button>
+        </div>
+        <div class="set-row">
+          <div><div class="set-row-label">Clear All Customers</div><div class="set-row-sub">Move all customer data to Bin</div></div>
+          <button class="set-btn red" onclick="doClearCustomers()" style="width:120px;">👥 Clear</button>
+        </div>
+        <div class="set-row" style="border-bottom:none;">
+          <div><div class="set-row-label" style="color:#f5a623;">🗑️ Deleted Records Bin</div><div class="set-row-sub">View, restore or permanently delete</div></div>
+          <button class="set-btn orange" onclick="openDeletedBin()" style="width:120px;position:relative;">🗑️ Open Bin <span id="bin-count-badge" style="display:none;position:absolute;top:-6px;right:-6px;background:#e63946;color:#fff;font-size:9px;font-weight:800;border-radius:10px;padding:2px 5px;min-width:16px;text-align:center;"></span></button>
+        </div>
+      </div>
+
       <!-- CHANGE PASSWORD -->
-      <div class="set-card" style="grid-column:span 2;">
+      <div class="set-card">
         <h3>🔒 Admin Password &amp; Security</h3>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
           <!-- LEFT: Password change -->
@@ -1401,51 +1453,50 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
       <div class="set-card" style="grid-column:1/-1;">
         <h3>📂 App Directories</h3>
         <!-- Row 1: Folders + Update app.html -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px;">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px;align-items:start;">
           <div style="background:var(--acc);border:1px solid var(--bdr);border-radius:10px;padding:16px;">
             <div style="font-size:11px;color:var(--or);font-weight:700;letter-spacing:1px;margin-bottom:6px;">📦 APP DATA FOLDER</div>
             <div style="font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6;">Where payments.json, customers.json, profiles.json are stored. Replace these to restore data.</div>
-            <div id="dir-data-path" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;margin-bottom:10px;word-break:break-all;min-height:28px;">Loading...</div>
+            <div id="dir-data-path" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;word-break:break-all;display:none;">
             <button onclick="nxConfirm('📂 Open Data Folder','Admin password required to access data folders.',function(){nxOpenFolder('data');},true)" style="background:#1a1200;border:1.5px solid var(--or);color:var(--or);padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='var(--or)';this.style.color='#111'" onmouseout="this.style.background='#1a1200';this.style.color='var(--or)'">📂 Open Data Folder</button>
           </div>
           <div style="background:var(--acc);border:1px solid var(--bdr);border-radius:10px;padding:16px;">
-            <div style="font-size:11px;color:#4a90d9;font-weight:700;letter-spacing:1px;margin-bottom:6px;">🖥️ APP INSTALL FOLDER</div>
+            <div style="font-size:11px;color:var(--or);font-weight:700;letter-spacing:1px;margin-bottom:6px;">🖥️ APP INSTALL FOLDER</div>
             <div style="font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6;">Where the app EXE and files are installed. Replace app.html here to update the app.</div>
-            <div id="dir-app-path" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;margin-bottom:10px;word-break:break-all;min-height:28px;">Loading...</div>
-            <button onclick="nxConfirm('📂 Open App Folder','Admin password required to access app folders.',function(){nxOpenFolder('app');},true)" style="background:#0a1a2a;border:1.5px solid #4a90d9;color:#4a90d9;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='#4a90d9';this.style.color='#fff'" onmouseout="this.style.background='#0a1a2a';this.style.color='#4a90d9'">📂 Open App Folder</button>
+            <div id="dir-app-path" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;word-break:break-all;display:none;">
+            <button onclick="nxConfirm('📂 Open App Folder','Admin password required to access app folders.',function(){nxOpenFolder('app');},true)" style="background:#1a1200;border:1.5px solid var(--or);color:var(--or);padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='var(--or)';this.style.color='#111'" onmouseout="this.style.background='#1a1200';this.style.color='var(--or)'">📂 Open App Folder</button>
           </div>
           <div style="background:var(--acc);border:1px solid var(--bdr);border-radius:10px;padding:16px;">
-            <div style="font-size:11px;color:#06d6a0;font-weight:700;letter-spacing:1px;margin-bottom:6px;">💾 BACKUP FOLDER</div>
+            <div style="font-size:11px;color:var(--or);font-weight:700;letter-spacing:1px;margin-bottom:6px;">💾 BACKUP FOLDER</div>
             <div style="font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6;">Recommended backup location. Copy your JSON data files here regularly for safety.</div>
-            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;margin-bottom:10px;min-height:28px;">Desktop\NEXTIOM-Backups\</div>
-            <button onclick="nxConfirm('📂 Open Desktop','Admin password required to access desktop folder.',function(){nxOpenFolder('desktop');},true)" style="background:#051a0d;border:1.5px solid #06d6a0;color:#06d6a0;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='#06d6a0';this.style.color='#111'" onmouseout="this.style.background='#1a0d00';this.style.color='#06d6a0'">📂 Open Desktop</button>
+            <button onclick="nxConfirm('📂 Open Desktop','Admin password required to access desktop folder.',function(){nxOpenFolder('desktop');},true)" style="background:#1a1200;border:1.5px solid var(--or);color:var(--or);padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='var(--or)';this.style.color='#111'" onmouseout="this.style.background='#1a1200';this.style.color='var(--or)'">📂 Open Desktop</button>
           </div>
           <!-- Update app.html -->
           <input type="file" id="nx-update-file" accept=".html" style="display:none;" onchange="nxDoAppUpdate(this)">
           <input type="file" id="nx-update-mainjs-file" accept=".js" style="display:none;" onchange="nxDoMainJsUpdate(this)">
-          <div style="background:#0e0a1a;border:1.5px solid #7c3aed;border-radius:10px;padding:16px;">
-            <div style="font-size:11px;color:#a78bfa;font-weight:700;letter-spacing:1px;margin-bottom:6px;">🔄 UPDATE app.html</div>
-            <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.6;">Drop a new <span style="color:#a78bfa;font-family:'IBM Plex Mono',monospace;">app.html</span> to update instantly. Or use <strong style="color:#F5A623;">Check for Update</strong> in the header.</div>
-            <div id="nx-update-status" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;margin-bottom:10px;min-height:20px;">Choose file to begin update</div>
-            <button onclick="nxAskUpdateFile()" style="background:#1a0a3a;border:1.5px solid #7c3aed;color:#a78bfa;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='#7c3aed';this.style.color='#fff'" onmouseout="this.style.background='#1a0a3a';this.style.color='#a78bfa'">📁 Update app.html (instant)</button>
+          <div style="background:var(--acc);border:1px solid var(--bdr);border-radius:10px;padding:16px;">
+            <div style="font-size:11px;color:var(--or);font-weight:700;letter-spacing:1px;margin-bottom:6px;">🔄 UPDATE app.html</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.6;">Drop a new <span style="font-family:'IBM Plex Mono',monospace;">app.html</span> to update instantly. Or use <strong style="color:var(--or);">Check for Update</strong> in the header.</div>
+            <div id="nx-update-status" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;display:none;margin-bottom:6px;"></div>
+            <button onclick="nxAskUpdateFile()" style="background:#1a1200;border:1.5px solid var(--or);color:var(--or);padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='var(--or)';this.style.color='#111'" onmouseout="this.style.background='#1a1200';this.style.color='var(--or)'">📁 Update app.html (instant)</button>
           </div>
         </div>
         <!-- Row 2: Update main.js + Rollback -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div style="background:#0e0a1a;border:1.5px solid #F5A623;border-radius:10px;padding:16px;">
-            <div style="font-size:11px;color:#F5A623;font-weight:700;letter-spacing:1px;margin-bottom:6px;">⚙️ UPDATE main.js</div>
-            <div style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.6;">Update <span style="color:#F5A623;font-family:'IBM Plex Mono',monospace;">main.js</span> server core — saves to data folder, takes effect after app restart.</div>
-            <div id="nx-mainjs-update-status" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;margin-bottom:8px;min-height:16px;"></div>
-            <button onclick="document.getElementById('nx-update-mainjs-file').click()" style="background:#1a0a00;border:1.5px solid #F5A623;color:#F5A623;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='#F5A623';this.style.color='#111'" onmouseout="this.style.background='#1a0a00';this.style.color='#F5A623'">⚙️ Update main.js (restart needed)</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
+          <div style="background:var(--acc);border:1px solid var(--bdr);border-radius:10px;padding:16px;">
+            <div style="font-size:11px;color:var(--or);font-weight:700;letter-spacing:1px;margin-bottom:6px;">⚙️ UPDATE main.js</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.6;">Update <span style="font-family:'IBM Plex Mono',monospace;">main.js</span> server core — saves to data folder, takes effect after app restart.</div>
+            <div id="nx-mainjs-update-status" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#555;display:none;margin-bottom:6px;"></div>
+            <button onclick="document.getElementById('nx-update-mainjs-file').click()" style="background:#1a1200;border:1.5px solid var(--or);color:var(--or);padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;" onmouseover="this.style.background='var(--or)';this.style.color='#111'" onmouseout="this.style.background='#1a1200';this.style.color='var(--or)'">⚙️ Update main.js (restart needed)</button>
           </div>
-          <div style="background:#0a1200;border:1.5px solid #e63946;border-radius:10px;padding:16px;">
-            <div style="font-size:11px;color:#e63946;font-weight:700;letter-spacing:1px;margin-bottom:6px;">⏪ ROLLBACK</div>
+          <div style="background:var(--acc);border:1px solid var(--bdr);border-radius:10px;padding:16px;">
+            <div style="font-size:11px;color:var(--or);font-weight:700;letter-spacing:1px;margin-bottom:6px;">⏪ ROLLBACK</div>
             <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.6;">Restore a previous version if something went wrong after an update. Last 5 versions are kept automatically.</div>
-            <button id="nx-rollback-btn" onclick="nxLoadRollbackList()" style="background:#1a0505;border:1.5px solid #e63946;color:#e63946;padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;margin-bottom:10px;" onmouseover="this.style.background='#e63946';this.style.color='#fff'" onmouseout="this.style.background='#1a0505';this.style.color='#e63946'">🔍 View Rollback History</button>
+            <button id="nx-rollback-btn" onclick="nxLoadRollbackList()" style="background:#1a1200;border:1.5px solid var(--or);color:var(--or);padding:7px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;width:100%;margin-bottom:10px;" onmouseover="this.style.background='var(--or)';this.style.color='#111'" onmouseout="this.style.background='#1a1200';this.style.color='var(--or)'">🔍 View Rollback History</button>
             <div id="nx-rollback-panel" style="display:none;">
-              <div style="font-size:10px;color:#F5A623;font-weight:700;letter-spacing:1px;margin-bottom:6px;">app.html versions</div>
+              <div style="font-size:10px;color:var(--or);font-weight:700;letter-spacing:1px;margin-bottom:6px;">app.html versions</div>
               <div id="nx-rollback-apphtml" style="margin-bottom:12px;"></div>
-              <div style="font-size:10px;color:#F5A623;font-weight:700;letter-spacing:1px;margin-bottom:6px;">main.js versions</div>
+              <div style="font-size:10px;color:var(--or);font-weight:700;letter-spacing:1px;margin-bottom:6px;">main.js versions</div>
               <div id="nx-rollback-mainjs"></div>
             </div>
           </div>
@@ -1472,7 +1523,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
           </select>
           <input type="text" class="slog-search" id="slog-search" placeholder="🔍 Search logs..." oninput="renderSysLog()">
           <button class="set-btn" style="border-color:var(--bdr);color:var(--muted);font-size:11px;padding:5px 12px;" onclick="exportSysLog()">⬇️ Export</button>
-          <button class="set-btn red" style="font-size:11px;padding:5px 12px;" onclick="clearSysLog()">🗑️ Clear Log</button>
+          
         </div>
       </div>
       <div class="slog-stats" id="slog-stats"></div>
@@ -2155,11 +2206,13 @@ function bmShowTab(tab) {
   document.getElementById('bm-tab-trash-content').style.display  = tab==='trash'  ? 'block' : 'none';
   var tl = document.getElementById('bm-tab-list');
   var tc = document.getElementById('bm-tab-colors');
+  var th = document.getElementById('bm-tab-theme');
   var tt = document.getElementById('bm-tab-trash');
   tl.style.borderBottomColor = tab==='list'   ? 'var(--or)' : 'transparent';
   tl.style.color             = tab==='list'   ? 'var(--or)' : '#555';
   tc.style.borderBottomColor = tab==='colors' ? 'var(--or)' : 'transparent';
   tc.style.color             = tab==='colors' ? 'var(--or)' : '#555';
+  if(th) { th.style.borderBottomColor = tab==='theme' ? 'var(--or)' : 'transparent'; th.style.color = tab==='theme' ? 'var(--or)' : '#555'; }
   tt.style.borderBottomColor = tab==='trash'  ? '#e63946'   : 'transparent';
   tt.style.color             = tab==='trash'  ? '#e63946'   : '#555';
   if(tab==='list')   bmRenderList();
@@ -2589,6 +2642,216 @@ function bmRenderColorRows() {
   } catch(e){}
 }
 
+// ── SYSTEM ACCENT COLOR ──
+var NX_DEFAULT_SYS_COLOR = '#F5A623';
+var _nxWheelBrightness = 0.85;
+var _nxWheelDragging = false;
+
+function nxDrawColorWheel() {
+  var canvas = document.getElementById('nx-color-wheel');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var cx = canvas.width/2, cy = canvas.height/2, r = cx - 2;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  // Draw hue/saturation wheel
+  for(var angle=0; angle<360; angle+=1) {
+    var startAngle = (angle-1) * Math.PI/180;
+    var endAngle   = (angle+1) * Math.PI/180;
+    var grad = ctx.createRadialGradient(cx,cy,0,cx,cy,r);
+    grad.addColorStop(0,   'hsl('+angle+',0%,'+(Math.round(_nxWheelBrightness*100))+'%)');
+    grad.addColorStop(1,   'hsl('+angle+',100%,'+(Math.round(_nxWheelBrightness*50))+'%)');
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,startAngle,endAngle);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+  }
+  // Draw circle cursor at current color position
+  var cur = nxGetSysColor();
+  var hsv = nxHexToHsv(cur);
+  if(hsv) {
+    var a = (hsv.h - 90) * Math.PI/180;
+    var dist = hsv.s * r;
+    var px = cx + dist * Math.cos(a);
+    var py = cy + dist * Math.sin(a);
+    ctx.beginPath();
+    ctx.arc(px,py,10,0,Math.PI*2);
+    ctx.strokeStyle='#fff';
+    ctx.lineWidth=2.5;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(px,py,10,0,Math.PI*2);
+    ctx.strokeStyle='rgba(0,0,0,0.4)';
+    ctx.lineWidth=1;
+    ctx.stroke();
+  }
+}
+
+function nxWheelPickColor(e) {
+  var canvas = document.getElementById('nx-color-wheel');
+  if(!canvas) return;
+  var rect = canvas.getBoundingClientRect();
+  var scaleX = canvas.width / rect.width;
+  var scaleY = canvas.height / rect.height;
+  var x = (e.clientX - rect.left) * scaleX - canvas.width/2;
+  var y = (e.clientY - rect.top)  * scaleY - canvas.height/2;
+  var r = canvas.width/2 - 2;
+  var dist = Math.sqrt(x*x + y*y);
+  if(dist > r) return;
+  var angle = Math.atan2(y,x) * 180/Math.PI + 90;
+  if(angle < 0) angle += 360;
+  var sat = Math.min(dist/r, 1);
+  var bri = _nxWheelBrightness;
+  // HSV to hex
+  var hex = nxHsvToHex(angle, sat, bri);
+  nxSetSysPreset(hex);
+  nxDrawColorWheel();
+}
+
+function nxWheelBrightnessChange(val) {
+  _nxWheelBrightness = val/100;
+  // Recompute current color with new brightness
+  var cur = nxGetSysColor();
+  var hsv = nxHexToHsv(cur);
+  if(hsv) {
+    var hex = nxHsvToHex(hsv.h, hsv.s, _nxWheelBrightness);
+    nxSetSysPreset(hex);
+  }
+  nxDrawColorWheel();
+}
+
+function nxHsvToHex(h,s,v) {
+  // HSV → RGB
+  var r,g,b;
+  var i = Math.floor(h/60)%6;
+  var f = h/60-Math.floor(h/60);
+  var p = v*(1-s), q = v*(1-f*s), t = v*(1-(1-f)*s);
+  if(i===0){r=v;g=t;b=p;} else if(i===1){r=q;g=v;b=p;}
+  else if(i===2){r=p;g=v;b=t;} else if(i===3){r=p;g=q;b=v;}
+  else if(i===4){r=t;g=p;b=v;} else{r=v;g=p;b=q;}
+  return '#'+[r,g,b].map(function(x){return ('0'+Math.round(x*255).toString(16)).slice(-2);}).join('');
+}
+
+function nxHexToHsv(hex) {
+  var r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if(!r) return null;
+  var rv=parseInt(r[1],16)/255, gv=parseInt(r[2],16)/255, bv=parseInt(r[3],16)/255;
+  var max=Math.max(rv,gv,bv), min=Math.min(rv,gv,bv), d=max-min;
+  var h=0,s=max===0?0:d/max,v=max;
+  if(d!==0){
+    if(max===rv) h=((gv-bv)/d+6)%6;
+    else if(max===gv) h=(bv-rv)/d+2;
+    else h=(rv-gv)/d+4;
+    h*=60;
+  }
+  return {h:h,s:s,v:v};
+}
+
+function nxInitColorWheel() {
+  var canvas = document.getElementById('nx-color-wheel');
+  if(!canvas) return;
+  // Set brightness slider from current color
+  var cur = nxGetSysColor();
+  var hsv = nxHexToHsv(cur);
+  if(hsv) {
+    _nxWheelBrightness = hsv.v;
+    var slider = document.getElementById('nx-brightness-slider');
+    if(slider) slider.value = Math.round(hsv.v*100);
+  }
+  nxDrawColorWheel();
+  canvas.onmousedown = function(e){ _nxWheelDragging=true; nxWheelPickColor(e); };
+  canvas.onmousemove = function(e){ if(_nxWheelDragging) nxWheelPickColor(e); };
+  canvas.onmouseup   = function(){ _nxWheelDragging=false; };
+  canvas.onmouseleave= function(){ _nxWheelDragging=false; };
+  // Touch support
+  canvas.ontouchstart = function(e){ e.preventDefault(); nxWheelPickColor(e.touches[0]); };
+  canvas.ontouchmove  = function(e){ e.preventDefault(); nxWheelPickColor(e.touches[0]); };
+}
+
+function nxGetSysColor() {
+  try { return localStorage.getItem('nx_sys_color') || NX_DEFAULT_SYS_COLOR; } catch(e){ return NX_DEFAULT_SYS_COLOR; }
+}
+
+function nxSaveSysColor() {
+  var hex = document.getElementById('nx-sys-color-hex');
+  var color = (hex && /^#[0-9a-fA-F]{6}$/.test(hex.value)) ? hex.value : NX_DEFAULT_SYS_COLOR;
+  try { localStorage.setItem('nx_sys_color', color); } catch(e){}
+  nxApplySysColor(color);
+  var msg = document.getElementById('sys-color-save-msg');
+  if(msg) { msg.textContent = '✅ Saved!'; setTimeout(function(){ msg.textContent=''; }, 2500); }
+}
+
+function nxResetSysColor() {
+  try { localStorage.removeItem('nx_sys_color'); } catch(e){}
+  nxSetSysPreset(NX_DEFAULT_SYS_COLOR);
+  var msg = document.getElementById('sys-color-save-msg');
+  if(msg) { msg.textContent = '↺ Reset to orange'; setTimeout(function(){ msg.textContent=''; }, 2500); }
+}
+
+function nxApplySysColor(color) {
+  var c = color || nxGetSysColor();
+  var r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(c);
+  var rgb = r ? parseInt(r[1],16)+','+parseInt(r[2],16)+','+parseInt(r[3],16) : '245,166,35';
+  document.documentElement.style.setProperty('--or', c);
+  document.documentElement.style.setProperty('--or-rgb', rgb);
+  // Update preset ring
+  var presets = document.querySelectorAll('#nx-sys-presets button');
+  presets.forEach(function(b){ b.style.border = b.style.background.toLowerCase() === c.toLowerCase() || b.title && b.getAttribute('onclick') && b.getAttribute('onclick').indexOf(c) > -1 ? '2px solid #fff' : '2px solid transparent'; });
+}
+
+function nxPreviewSysColor(val) {
+  var hex = document.getElementById('nx-sys-color-hex');
+  var preview = document.getElementById('nx-sys-color-preview');
+  if(hex) hex.value = val;
+  if(preview) preview.style.background = val;
+  nxApplySysColor(val);
+  nxUpdatePresetHighlight(val);
+}
+
+function nxSyncSysColorHex(val) {
+  if(/^#[0-9a-fA-F]{6}$/.test(val)) {
+    var inp = document.getElementById('nx-sys-color-inp');
+    var preview = document.getElementById('nx-sys-color-preview');
+    if(inp) inp.value = val;
+    if(preview) preview.style.background = val;
+    nxApplySysColor(val);
+    nxUpdatePresetHighlight(val);
+  }
+}
+
+function nxSetSysPreset(color) {
+  var inp = document.getElementById('nx-sys-color-inp');
+  var hex = document.getElementById('nx-sys-color-hex');
+  var preview = document.getElementById('nx-sys-color-preview');
+  if(inp) inp.value = color;
+  if(hex) hex.value = color;
+  if(preview) preview.style.background = color;
+  nxApplySysColor(color);
+  nxUpdatePresetHighlight(color);
+  nxDrawColorWheel();
+}
+
+function nxUpdatePresetHighlight(color) {
+  var presets = document.querySelectorAll('#nx-sys-presets div');
+  presets.forEach(function(b){
+    b.style.border = b.style.background.toLowerCase() === color.toLowerCase() ? '2px solid #fff' : '2px solid transparent';
+  });
+}
+
+function nxInitSysColorUI() {
+  var color = nxGetSysColor();
+  var hex = document.getElementById('nx-sys-color-hex');
+  var preview = document.getElementById('nx-sys-color-preview');
+  var inp = document.getElementById('nx-sys-color-inp');
+  if(inp) inp.value = color;
+  if(hex) hex.value = color;
+  if(preview) preview.style.background = color;
+  nxApplySysColor(color);
+  nxUpdatePresetHighlight(color);
+  nxInitColorWheel();
+}
+
 // ── BILL TYPE COLORS ──
 var DEFAULT_BILL_COLORS = {
   electricity: {icon:'⚡', label:'ELECTRICITY', color:'#f5a623'},
@@ -2714,6 +2977,7 @@ function _doResetColors() {
 
 document.getElementById('pay_date').value = nowDate();
 applyBillColors();
+nxApplySysColor();
 bmRebuildTypes(); // load custom bill types on startup
 refreshCreditCount();
 // Load saved shop info
@@ -2870,6 +3134,17 @@ function selType(type) {
         '</div>';
       html += '</div>';
       html += '<div id="nx-waive-notice" style="display:none;font-size:10px;color:#F5A623;margin-top:-4px;margin-bottom:4px;letter-spacing:0.5px;">✂ Service charge will be waived on this bill</div>';
+      html += '<div style="margin-top:6px;">' +
+        '<div class="fg"><label>DISCOUNT</label>' +
+        '<div style="display:flex;gap:6px;align-items:center;">' +
+        '<input type="number" id="f_discount" placeholder="0.00" value="0" min="0" step="0.01" oninput="nxCalcDiscount()" style="flex:1;box-sizing:border-box;">' +
+        '<button type="button" id="nx-disc-rs" onclick="nxSetDiscType(\'LKR\')" ' +
+        'style="background:#F5A623;border:1.5px solid #F5A623;color:#111;padding:7px 11px;border-radius:6px;font-size:11px;font-weight:800;cursor:pointer;font-family:\'IBM Plex Sans\',sans-serif;white-space:nowrap;">Rs</button>' +
+        '<button type="button" id="nx-disc-pct" onclick="nxSetDiscType(\'%\')" ' +
+        'style="background:#1a0d00;border:1.5px solid #2a2a26;color:#555;padding:7px 11px;border-radius:6px;font-size:11px;font-weight:800;cursor:pointer;font-family:\'IBM Plex Sans\',sans-serif;white-space:nowrap;">%</button>' +
+        '</div></div>' +
+        '</div>' +
+        '<div id="nx-disc-notice" style="display:none;font-size:10px;color:#06d6a0;margin-top:-4px;margin-bottom:4px;letter-spacing:0.5px;"></div>';
       i++;
       continue;
     }
@@ -3117,6 +3392,35 @@ function nxToggleWaive() {
     if(notice) notice.style.display = 'none';
   }
 }
+window._nxDiscType = 'LKR';
+function nxSetDiscType(type) {
+  window._nxDiscType = type;
+  var rsBtn  = document.getElementById('nx-disc-rs');
+  var pctBtn = document.getElementById('nx-disc-pct');
+  if(!rsBtn || !pctBtn) return;
+  if(type === 'LKR') {
+    rsBtn.style.background='#F5A623';  rsBtn.style.borderColor='#F5A623';  rsBtn.style.color='#111';
+    pctBtn.style.background='#1a0d00'; pctBtn.style.borderColor='#2a2a26'; pctBtn.style.color='#555';
+  } else {
+    pctBtn.style.background='#F5A623'; pctBtn.style.borderColor='#F5A623'; pctBtn.style.color='#111';
+    rsBtn.style.background='#1a0d00';  rsBtn.style.borderColor='#2a2a26';  rsBtn.style.color='#555';
+  }
+  nxCalcDiscount();
+}
+function nxToggleDiscType() { nxSetDiscType(window._nxDiscType === 'LKR' ? '%' : 'LKR'); }
+function nxCalcDiscount() {
+  var inp = document.getElementById('f_discount');
+  var notice = document.getElementById('nx-disc-notice');
+  var amtEl = document.getElementById('f_amount') || document.getElementById('f_total_amount');
+  if(!inp || !notice) return;
+  var discVal = parseFloat(inp.value) || 0;
+  var baseAmt = amtEl ? (parseFloat(amtEl.value) || 0) : 0;
+  if(discVal <= 0 || baseAmt <= 0) { notice.style.display='none'; notice.textContent=''; return; }
+  var discType = window._nxDiscType || 'LKR';
+  var discAmt = discType === '%' ? Math.min(baseAmt * discVal / 100, baseAmt) : Math.min(discVal, baseAmt);
+  notice.style.display = 'block';
+  notice.textContent = '🏷 Discount: LKR ' + discAmt.toFixed(2) + ' off → Final: LKR ' + Math.max(0, baseAmt - discAmt).toFixed(2);
+}
 function addBill() {
   if(!curType) return;
   var cfg = TYPES[curType];
@@ -3140,6 +3444,16 @@ function addBill() {
   b.amount = parseFloat(b.amount) || 0;
   b.svc_charge = parseFloat(b.svc_charge) || 0;
   b.svc_waived = _nxWaiveSvc; // capture waive state
+  // Capture discount
+  var discVal = parseFloat(document.getElementById("f_discount") ? document.getElementById("f_discount").value : 0) || 0;
+  var discType = window._nxDiscType || "LKR";
+  var discAmt = 0;
+  if(discVal > 0) {
+    var baseAmt = parseFloat(b.amount) || 0;
+    discAmt = discType === "%" ? Math.min(baseAmt * discVal / 100, baseAmt) : Math.min(discVal, baseAmt);
+    b.discount = parseFloat(discAmt.toFixed(2));
+    b.amount = parseFloat((baseAmt - discAmt).toFixed(2));
+  } else { b.discount = 0; }
   if(!b.amount) { alert('Please enter the bill amount!'); return; }
 
   // ── SERVICES: auto-merge identical items into qty ──
@@ -3176,6 +3490,13 @@ function addBill() {
   var waiveNotice = document.getElementById('nx-waive-notice');
   if(waiveBtn) { waiveBtn.style.background='#1a0d00'; waiveBtn.style.color='#555'; waiveBtn.style.borderColor='#2a2a26'; waiveBtn.textContent='✂ WAIVE'; }
   if(waiveNotice) waiveNotice.style.display='none';
+  // Reset discount
+  var discInp = document.getElementById('f_discount');
+  var discNotice = document.getElementById('nx-disc-notice');
+  if(discInp) discInp.value = '0';
+  if(discNotice) { discNotice.style.display='none'; discNotice.textContent=''; }
+  window._nxDiscType = 'LKR';
+  nxSetDiscType('LKR');
   // Clear qty calc display
   var totDiv = document.getElementById('svc-calc-total');
   if(totDiv) totDiv.style.display = 'none';
@@ -3185,6 +3506,61 @@ function addBill() {
   var opEl = document.getElementById('f_operator');
   if(opEl && curType==='print') { opEl.selectedIndex = 0; }
   renderCart(); calcChange(); renderReceipt(); updateSessionLive();
+}
+
+function editCartBill(id) {
+  var b = cart.find(function(x){ return x.id === id; });
+  if (!b) return;
+  // Remove existing popup
+  var old = document.getElementById('nx-cart-edit-popup');
+  if (old) old.remove();
+
+  var ciStyle = 'width:100%;box-sizing:border-box;background:#0d0d0b;border:1.5px solid #333;border-radius:6px;padding:8px 10px;font-size:12px;color:#fff;font-family:\'IBM Plex Mono\',monospace;outline:none;';
+
+  // Build editable fields based on what the bill has
+  var fields = '';
+  if (b.cust_name !== undefined)   fields += '<div style="margin-bottom:10px;"><label style="font-size:10px;color:#888;font-weight:700;display:block;margin-bottom:4px;">CUSTOMER NAME</label><input id="ce-cust" value="'+escHtml(b.cust_name||'')+'" style="'+ciStyle+'"></div>';
+  if (b.mobile_no !== undefined)   fields += '<div style="margin-bottom:10px;"><label style="font-size:10px;color:#888;font-weight:700;display:block;margin-bottom:4px;">ACCOUNT / PHONE</label><input id="ce-acct" value="'+escHtml(b.mobile_no||b.account||'')+'" style="'+ciStyle+'"></div>';
+  if (b.account !== undefined && b.mobile_no === undefined) fields += '<div style="margin-bottom:10px;"><label style="font-size:10px;color:#888;font-weight:700;display:block;margin-bottom:4px;">ACCOUNT NO</label><input id="ce-acct" value="'+escHtml(b.account||'')+'" style="'+ciStyle+'"></div>';
+  if (b.operator !== undefined)    fields += '<div style="margin-bottom:10px;"><label style="font-size:10px;color:#888;font-weight:700;display:block;margin-bottom:4px;">OPERATOR / PROVIDER</label><input id="ce-op" value="'+escHtml(b.operator||'')+'" style="'+ciStyle+'"></div>';
+  if (b.bill_month !== undefined)  fields += '<div style="margin-bottom:10px;"><label style="font-size:10px;color:#888;font-weight:700;display:block;margin-bottom:4px;">PERIOD / MONTH</label><input id="ce-period" value="'+escHtml(b.bill_month||'')+'" style="'+ciStyle+'"></div>';
+  if (b.service_name !== undefined) fields += '<div style="margin-bottom:10px;"><label style="font-size:10px;color:#888;font-weight:700;display:block;margin-bottom:4px;">SERVICE NAME</label><input id="ce-svc" value="'+escHtml(b.service_name||'')+'" style="'+ciStyle+'"></div>';
+  if (b.bank_ref !== undefined)    fields += '<div style="margin-bottom:10px;"><label style="font-size:10px;color:#888;font-weight:700;display:block;margin-bottom:4px;">REFERENCE NO</label><input id="ce-ref" value="'+escHtml(b.bank_ref||'')+'" style="'+ciStyle+'"></div>';
+  fields += '<div style="margin-bottom:10px;"><label style="font-size:10px;color:#888;font-weight:700;display:block;margin-bottom:4px;">AMOUNT (LKR)</label><input id="ce-amt" type="number" value="'+b.amount.toFixed(2)+'" style="'+ciStyle+'"></div>';
+  if (b.svc_charge !== undefined)  fields += '<div style="margin-bottom:10px;"><label style="font-size:10px;color:#888;font-weight:700;display:block;margin-bottom:4px;">SERVICE CHARGE (LKR)</label><input id="ce-svcamt" type="number" value="'+b.svc_charge.toFixed(2)+'" style="'+ciStyle+'"></div>';
+
+  var overlay = document.createElement('div');
+  overlay.id = 'nx-cart-edit-popup';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:99999;display:flex;align-items:center;justify-content:center;';
+  overlay.innerHTML =
+    '<div style="background:#1a1a18;border:1.5px solid var(--or);border-radius:14px;padding:24px 28px;min-width:360px;max-width:460px;max-height:80vh;overflow-y:auto;font-family:\'IBM Plex Sans\',sans-serif;">' +
+      '<div style="font-size:13px;font-weight:800;color:var(--or);letter-spacing:1px;margin-bottom:4px;">✏️ EDIT BILL</div>' +
+      '<div style="font-size:11px;color:#555;margin-bottom:16px;">' + b.cfg.icon + ' ' + b.cfg.label + '</div>' +
+      fields +
+      '<div style="display:flex;gap:10px;margin-top:6px;">' +
+        '<button id="ce-cancel" style="flex:1;background:#1a1a18;border:1.5px solid #444;color:#888;padding:9px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;">✕ Cancel</button>' +
+        '<button id="ce-save" style="flex:2;background:var(--or);border:none;color:#111;padding:9px;border-radius:7px;font-size:12px;font-weight:800;cursor:pointer;">✔ Save Changes</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+
+  document.getElementById('ce-cancel').onclick = function(){ overlay.remove(); };
+  overlay.onclick = function(e){ if(e.target===overlay) overlay.remove(); };
+
+  document.getElementById('ce-save').onclick = function() {
+    // Apply edits back to cart item
+    if(document.getElementById('ce-cust'))   b.cust_name   = document.getElementById('ce-cust').value;
+    if(document.getElementById('ce-acct'))   { b.mobile_no = document.getElementById('ce-acct').value; b.account = document.getElementById('ce-acct').value; }
+    if(document.getElementById('ce-op'))     b.operator    = document.getElementById('ce-op').value;
+    if(document.getElementById('ce-period')) b.bill_month  = document.getElementById('ce-period').value;
+    if(document.getElementById('ce-svc'))    b.service_name= document.getElementById('ce-svc').value;
+    if(document.getElementById('ce-ref'))    b.bank_ref    = document.getElementById('ce-ref').value;
+    if(document.getElementById('ce-amt'))    b.amount      = parseFloat(document.getElementById('ce-amt').value)||0;
+    if(document.getElementById('ce-svcamt')) b.svc_charge  = parseFloat(document.getElementById('ce-svcamt').value)||0;
+    overlay.remove();
+    renderCart(); calcChange(); renderReceipt(); updateSessionLive();
+    nxToast('✅ Bill updated!', 2000);
+  };
 }
 
 function removeBill(id) { cart = cart.filter(function(b){return b.id!==id;}); renderCart(); calcChange(); renderReceipt(); updateSessionLive(); }
@@ -3206,17 +3582,20 @@ function renderCart() {
       unitInfo = '<div class="ci-unit">LKR '+b._unitPrice.toFixed(2)+' each</div>';
     }
     html += '<div class="cart-item"><div class="ci-info">' +
-      '<div class="ci-name">' + b.cfg.icon + ' ' + b.cfg.label + qtyBadge + (b.svc_waived ? '<span style="font-size:9px;background:#2a1a00;color:#F5A623;border:1px solid #F5A623;border-radius:3px;padding:1px 5px;margin-left:6px;font-weight:800;">✂ SVC WAIVED</span>' : '') + '</div>' +
+      '<div class="ci-name">' + b.cfg.icon + ' ' + b.cfg.label + qtyBadge + (b.svc_waived ? '<span style="font-size:9px;background:#2a1a00;color:#F5A623;border:1px solid #F5A623;border-radius:3px;padding:1px 5px;margin-left:6px;font-weight:800;">✂ SVC WAIVED</span>' : '') + (b.discount>0 ? '<span style="font-size:9px;background:#0a2a0a;color:#06d6a0;border:1px solid #06d6a0;border-radius:3px;padding:1px 5px;margin-left:6px;font-weight:800;">🏷 -LKR '+b.discount.toFixed(2)+'</span>' : '') + '</div>' +
       '<div class="ci-sub">' + sub + '</div>' + unitInfo +
       '</div>' +
       '<div class="ci-amt">LKR ' + tot.toFixed(2) + (b.svc_waived && b.svc_charge>0 ? '<div style="font-size:9px;color:#888;text-decoration:line-through;">+'+b.svc_charge.toFixed(2)+' svc</div>' : '') + '</div>' +
+      '<button class="ci-edit" onclick="event.stopPropagation();editCartBill(' + b.id + ')" title="Edit" style="background:#1a1200;border:1px solid var(--or);color:var(--or);border-radius:5px;padding:3px 7px;font-size:11px;cursor:pointer;margin-right:4px;font-weight:700;">✏️</button>' +
       '<button class="ci-del" onclick="removeBill(' + b.id + ')">✕</button></div>';
   });
   var bT = cart.reduce(function(s,b){return s+b.amount;},0);
   var sT = cart.reduce(function(s,b){return s+(b.svc_waived?0:b.svc_charge);},0);
+  var dT = cart.reduce(function(s,b){return s+(b.discount||0);},0);
   var gT = bT+sT;
   html += '<div class="cart-sum"><div class="csr"><span>Bills subtotal</span><span>LKR ' + bT.toFixed(2) + '</span></div>' +
     (sT>0?'<div class="csr"><span>Service charges</span><span>LKR ' + sT.toFixed(2) + '</span></div>':'') +
+    (dT>0?'<div class="csr" style="color:#06d6a0;font-style:italic;"><span>🏷 Discounts applied</span><span>- LKR ' + dT.toFixed(2) + '</span></div>':'') +
     '<div class="cgrand"><span>GRAND TOTAL</span><span>LKR ' + gT.toFixed(2) + '</span></div></div>';
   el.innerHTML = html;
 }
@@ -3311,6 +3690,7 @@ function renderReceipt() {
       (b.type==='print' && b.qty>1 ? rr('QTY', b.qty + ' × LKR ' + (b._unitPrice||0).toFixed(2)) : '') +
       (b.type==='print' && b.qty===1 && b._unitPrice ? rr('UNIT PRICE','LKR '+(b._unitPrice||0).toFixed(2)) : '') +
       '<div class="rr" style="font-weight:600;"><span>'+(b.qty>1?'TOTAL AMT':'BILL AMT')+'</span><span class="rv">LKR '+b.amount.toFixed(2)+'</span></div>' +
+      (b.discount>0 ? '<div class="rr" style="font-style:italic;color:#06d6a0;"><span>DISCOUNT</span><span class="rv">- LKR '+b.discount.toFixed(2)+'</span></div>' : '') +
       (b.svc_charge>0 ? (b.svc_waived
         ? '<div class="rr"><span>SVC CHARGE</span><span class="rv"><span style="text-decoration:line-through;opacity:0.45;">LKR '+b.svc_charge.toFixed(2)+'</span> <span style="font-style:italic;">waived</span></span></div>'
         : rr('SVC CHARGE','LKR '+b.svc_charge.toFixed(2))) : '') +
@@ -3332,7 +3712,7 @@ function renderReceipt() {
     '<hr class="rd">' + billsHtml + '<hr class="rds">' +
     (cart.length>1 ? rr('BILLS SUBTOTAL','LKR '+bT.toFixed(2)) : '') +
     (cart.length>1&&sT>0 ? rr('SVC CHARGES','LKR '+sT.toFixed(2)) : '') +
-    (function(){ var w=cart.reduce(function(s,b){return s+(b.svc_waived?b.svc_charge:0);},0); return w>0?'<div class="rr" style="font-style:italic;opacity:0.6;"><span>YOU SAVED</span><span class="rv">- LKR '+w.toFixed(2)+'</span></div>':''; })() +
+    (function(){ var w=cart.reduce(function(s,b){return s+(b.svc_waived?b.svc_charge:0);},0)+cart.reduce(function(s,b){return s+(b.discount||0);},0); return w>0?'<div class="rr" style="font-style:italic;opacity:0.6;"><span>YOU SAVED</span><span class="rv">- LKR '+w.toFixed(2)+'</span></div>':''; })() +
     '<div class="rtot"><span>TOTAL PAID</span><span>LKR '+gT.toFixed(2)+'</span></div>' +
     (cash>0 ? '<hr class="rd">'+rr('CASH RECEIVED','LKR '+cash.toFixed(2))+'<div class="rr" style="font-weight:700;"><span>BALANCE</span><span class="rv">LKR '+bal.toFixed(2)+'</span></div>' : '') +
     '<hr class="rd"><div class="rsm">PAYMENT RECEIVED IN FULL</div>' +
@@ -4759,8 +5139,8 @@ function nxLoadDirPaths() {
       if (paths) {
         var dp = document.getElementById('dir-data-path');
         var ap = document.getElementById('dir-app-path');
-        if (dp) dp.textContent = paths.data || '—';
-        if (ap) ap.textContent = paths.app || '—';
+        if(dp && paths.data){ dp.textContent = paths.data; dp.style.display='block'; dp.style.marginBottom='10px'; }
+        if(ap && paths.app){ ap.textContent = paths.app; ap.style.display='block'; ap.style.marginBottom='10px'; }
       }
     }).catch(function(){});
   }
@@ -4953,6 +5333,7 @@ async function nxDoMainJsUpdate(input) {
   var file = input.files[0];
   var statusEl = document.getElementById('nx-mainjs-update-status');
   if (!file) return;
+  if(statusEl){ statusEl.style.display='block'; statusEl.style.marginBottom='6px'; }
   statusEl.style.color = '#a78bfa';
   statusEl.textContent = '⏳ Reading file...';
   var reader = new FileReader();
@@ -4999,6 +5380,7 @@ async function nxDoAppUpdate(input) {
   var file = input.files[0];
   var statusEl = document.getElementById('nx-update-status');
   if (!file) return;
+  if(statusEl){ statusEl.style.display='block'; statusEl.style.marginBottom='6px'; }
   // Basic validation — must be an HTML file containing NEXTIOM marker
   statusEl.style.color = '#a78bfa';
   statusEl.textContent = '⏳ Reading file...';
@@ -5051,6 +5433,7 @@ async function loadSettingsPage(){
   document.getElementById('set-shop-name').value = sn;
   document.getElementById('set-shop-tel').value = st;
   renderColorPickers();
+  setTimeout(nxInitSysColorUI, 50);
   nxLoadDirPaths();
   nxLoadSQStatus();
   bmRenderList();
